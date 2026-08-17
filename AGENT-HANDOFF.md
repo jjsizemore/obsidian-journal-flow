@@ -2,7 +2,7 @@
 
 ## Objective
 
-Install the supplied core-plugin-only Check-in and Analyze Thought journaling workflow into Jermaine's Obsidian vault without deleting or overwriting unrelated vault content.
+Install the supplied core-plugin-only Check-in and Analyze Thought journaling workflow into the user's Obsidian vault without deleting or overwriting unrelated vault content.
 
 ## Vault
 
@@ -28,7 +28,7 @@ Use the files in the `obsidian-journal-flow` package supplied with this prompt.
 5. Copy `journal-flow.css` into `.obsidian/snippets/`.
 6. Preserve all existing files, including the current `Journal/2026-08-13/` notes.
 7. Do not overwrite a same-named target file without first saving a timestamped backup and presenting the diff.
-8. Do not edit undocumented Obsidian configuration JSON unless explicitly authorized. Instead, report the exact UI settings Jermaine must apply from `SETUP.md`.
+8. Do not edit undocumented Obsidian configuration JSON unless explicitly authorized. Instead, report the exact UI settings the user must apply from `SETUP.md`.
 9. Validate that all copied Markdown files are intact, all YAML frontmatter is syntactically valid after template variables are treated as strings, and CSS braces are balanced.
 10. Report the final tree, files changed, any conflicts, and the remaining manual settings.
 
