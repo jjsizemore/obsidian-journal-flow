@@ -1,0 +1,121 @@
+/*
+Obsidian Journal Flow
+Scoped to notes whose cssclasses property contains `journal-flow`.
+Designed for current Obsidian callout color syntax, where --callout-color
+accepts a normal CSS color value.
+*/
+
+.journal-flow {
+  --journal-accent: #3f9694;
+  --journal-accent-soft: rgba(63, 150, 148, 0.12);
+  --journal-shadow: 0 10px 28px rgba(0, 0, 0, 0.07);
+}
+
+.journal-flow h1 {
+  letter-spacing: -0.025em;
+  margin-bottom: 1.25rem;
+}
+
+.journal-flow h2,
+.journal-flow h3 {
+  letter-spacing: -0.015em;
+}
+
+.journal-flow .callout {
+  border-radius: 16px;
+  box-shadow: var(--journal-shadow);
+  margin-block: 1rem;
+}
+
+.journal-flow .callout[data-callout="journal-progress"] {
+  --callout-color: var(--journal-accent);
+  --callout-icon: lucide-circle-dot;
+  --callout-border-width: 1px;
+  --callout-border-opacity: 0.22;
+}
+
+.journal-flow .callout[data-callout="journal-choices"] {
+  --callout-color: var(--journal-accent);
+  --callout-icon: lucide-list-checks;
+  --callout-border-width: 1px;
+  --callout-border-opacity: 0.18;
+}
+
+.journal-flow .callout[data-callout="journal-action"] {
+  --callout-color: var(--journal-accent);
+  --callout-icon: lucide-arrow-right-circle;
+  --callout-border-width: 1px;
+  --callout-border-opacity: 0.24;
+}
+
+.journal-flow .callout-title {
+  font-size: 1.02em;
+  font-weight: 700;
+}
+
+.journal-flow input[type="checkbox"] {
+  width: 1.15em;
+  height: 1.15em;
+  accent-color: var(--journal-accent);
+}
+
+/* Journal selections represent recorded states, not completed work. */
+.journal-flow .task-list-item.is-checked,
+.journal-flow .task-list-item.is-checked * {
+  color: var(--text-normal);
+  text-decoration: none;
+}
+
+.journal-flow .HyperMD-task-line[data-task="x"],
+.journal-flow .HyperMD-task-line[data-task="X"] {
+  color: var(--text-normal);
+  text-decoration: none;
+}
+
+.journal-flow a.external-link[href^="obsidian://unique"] {
+  display: inline-block;
+  padding: 0.72em 1.15em;
+  border-radius: 999px;
+  background: var(--journal-accent);
+  background-image: none;
+  color: #ffffff;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 8px 22px rgba(63, 150, 148, 0.24);
+}
+
+.journal-flow a.external-link[href^="obsidian://unique"]:hover {
+  filter: brightness(0.96);
+  color: #ffffff;
+}
+
+.journal-flow hr {
+  border-color: var(--journal-accent-soft);
+  margin-block: 1.75rem;
+}
+
+@media (min-width: 700px) {
+  .journal-flow .callout[data-callout="journal-choices"] ul.contains-task-list {
+    columns: 2;
+    column-gap: 2rem;
+  }
+
+  .journal-flow .callout[data-callout="journal-choices"] .task-list-item {
+    break-inside: avoid;
+  }
+}
+
+@media (max-width: 699px) {
+  .journal-flow .callout {
+    border-radius: 14px;
+    margin-block: 0.8rem;
+  }
+
+  .journal-flow a.external-link[href^="obsidian://unique"] {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+    padding-block: 0.85em;
+  }
+}
