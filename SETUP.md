@@ -3,10 +3,12 @@
 Designed for the vault at:
 
 ```text
-$HOME/Documents/Obsidian
+iCloud Drive/obsidian
 ```
 
-Note: `$HOME` evaluates automatically in terminal commands (`$HOME` or `~`). When selecting folders in graphical UI dialogs (Finder, Explorer, or Obsidian file dialogs), navigate to your home directory (`~/Documents/Obsidian` or `/Users/<username>/Documents/Obsidian`). The vault name is assumed to be `Obsidian`, based on the vault folder name. If Obsidian shows a different vault name in the vault switcher, replace `vault=Obsidian` in `Templates/Journal/Check-in.md`.
+Select the top-level `obsidian` folder from iCloud Drive when opening the vault in Obsidian. On iOS, use the iCloud Drive picker rather than a macOS filesystem path. `Journal` and `Templates` must remain subfolders of this vault; do not add either one as a separate vault.
+
+The registered vault name shown by Obsidian is `Obsidian`. The folder name is `obsidian`, but URI links must use the registered vault name. If the vault name changes, replace `vault=Obsidian` in `Templates/Journal/Check-in.md` and the mirrored copy under `Vault Overlay/Templates/Journal/`.
 
 ## 1. Copy the package files
 
@@ -18,10 +20,10 @@ Templates/Journal/Check-in.md
 Templates/Journal/Analyze Thought.md
 ```
 
-into:
+into the vault:
 
 ```text
-$HOME/Documents/Obsidian/Templates/Journal/
+iCloud Drive/obsidian/Templates/Journal/
 ```
 
 Copy:
@@ -30,10 +32,10 @@ Copy:
 Snippets/journal-flow.css
 ```
 
-into:
+into the vault:
 
 ```text
-$HOME/Documents/Obsidian/.obsidian/snippets/journal-flow.css
+iCloud Drive/obsidian/.obsidian/snippets/journal-flow.css
 ```
 
 The package also includes a `Vault Overlay` folder that mirrors these destinations.
@@ -235,7 +237,7 @@ Create notes through Daily Notes, Unique Note Creator, or **Templates: Insert te
 Confirm the file is exactly:
 
 ```text
-$HOME/Documents/Obsidian/.obsidian/snippets/journal-flow.css
+iCloud Drive/obsidian/.obsidian/snippets/journal-flow.css
 ```
 
 Then reload snippets and enable it under Appearance.

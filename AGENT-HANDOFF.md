@@ -7,10 +7,10 @@ Install the supplied core-plugin-only Check-in and Analyze Thought journaling wo
 ## Vault
 
 ```text
-$HOME/Documents/Obsidian
+iCloud Drive/obsidian
 ```
 
-(`$HOME` evaluates automatically in terminal commands. For graphical file dialogs or Finder, replace `$HOME` with the active user's home path `~/` or `/Users/<username>`).
+(Select the top-level `obsidian` folder from iCloud Drive when opening the vault in Obsidian. `Journal` and `Templates` are subfolders, not separate vaults. A macOS shell may expose the same folder through a private `~/Library/Mobile Documents/...` path, but that is not the path to enter in Obsidian or iOS.)
 
 ## Source package
 
