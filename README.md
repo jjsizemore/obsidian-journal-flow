@@ -46,6 +46,18 @@ The same commands and synced Markdown user script work on macOS and iOS.
 
 Keep **Daily notes**, **Templates**, **Search**, and **Word count** enabled. Install and enable **QuickAdd**, then configure the two macros documented in [SETUP.md](SETUP.md).
 
+## Agent-assisted installation
+
+Read `AGENTS.md` and `setup/manifest.json`, then run:
+
+```bash
+node setup/install.mjs --vault "/path/to/vault" --dry-run
+node setup/install.mjs --vault "/path/to/vault" --apply
+node setup/verify.mjs --vault "/path/to/vault"
+```
+
+The installer backs up and merges documented config files. QuickAdd `data.json` remains a schema-sensitive UI step unless an approved schema is available.
+
 ## Start here
 
 Read [SETUP.md](SETUP.md), then copy `Templates`, `Scripts`, and `Snippets` into the vault.
