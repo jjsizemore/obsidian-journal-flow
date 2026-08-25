@@ -72,22 +72,6 @@ accepts a normal CSS color value.
   text-decoration: none;
 }
 
-.journal-flow a.external-link[href^="obsidian://unique"] {
-  display: inline-block;
-  padding: 0.72em 1.15em;
-  border-radius: 999px;
-  background: var(--journal-accent);
-  background-image: none;
-  color: #ffffff;
-  font-weight: 700;
-  text-decoration: none;
-  box-shadow: 0 8px 22px rgba(63, 150, 148, 0.24);
-}
-
-.journal-flow a.external-link[href^="obsidian://unique"]:hover {
-  filter: brightness(0.96);
-  color: #ffffff;
-}
 
 .journal-flow hr {
   border-color: var(--journal-accent-soft);
@@ -111,11 +95,4 @@ accepts a normal CSS color value.
     margin-block: 0.8rem;
   }
 
-  .journal-flow a.external-link[href^="obsidian://unique"] {
-    display: block;
-    width: 100%;
-    box-sizing: border-box;
-    text-align: center;
-    padding-block: 0.85em;
-  }
 }
