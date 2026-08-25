@@ -32,6 +32,9 @@ test("installer preserves unknown config keys and backs up replacements", async 
     assert.deepEqual(JSON.parse(await readFile(path.join(vault, ".obsidian/community-plugins.json"), "utf8")), ["other-plugin", "quickadd"]);
     await readFile(path.join(backup, ".obsidian/daily-notes.json"));
     await readFile(path.join(backup, ".obsidian/community-plugins.json"));
+    await rm(path.join(vault, ".obsidian/community-plugins.json"));
+    const missingPluginConfig = await exec(process.execPath, [path.join(repoRoot, "setup/verify.mjs"), "--vault", vault], { cwd: repoRoot });
+    assert.match(missingPluginConfig.stdout, /community-plugins\.json is missing/);
   } finally {
     await rm(vault, { recursive: true, force: true });
     await rm(backup, { recursive: true, force: true });

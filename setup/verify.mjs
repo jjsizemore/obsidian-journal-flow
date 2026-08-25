@@ -40,12 +40,18 @@ if (!dailyConfigMatches) {
   failures += 1;
 } else report("PASS", "Daily Notes config");
 
-const plugins = await readJson(path.resolve(vault, manifest.config.communityPlugins.destination));
-for (const plugin of manifest.config.communityPlugins.required) {
-  if (!Array.isArray(plugins) || !plugins.includes(plugin)) {
-    report("FAIL", `community plugin is not enabled: ${plugin}`);
-    failures += 1;
-  } else report("PASS", `community plugin enabled: ${plugin}`);
+const communityPluginsPath = path.resolve(vault, manifest.config.communityPlugins.destination);
+if (!(await exists(communityPluginsPath))) {
+  report("WARN", "community-plugins.json is missing; enable QuickAdd in Obsidian after installing it");
+  warnings += 1;
+} else {
+  const plugins = await readJson(communityPluginsPath);
+  for (const plugin of manifest.config.communityPlugins.required) {
+    if (!Array.isArray(plugins) || !plugins.includes(plugin)) {
+      report("FAIL", `community plugin is not enabled: ${plugin}`);
+      failures += 1;
+    } else report("PASS", `community plugin enabled: ${plugin}`);
+  }
 }
 
 const quickAddDataPath = path.resolve(vault, manifest.config.quickAddData.destination);
