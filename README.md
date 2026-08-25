@@ -1,48 +1,51 @@
-# Obsidian Check-in and Analyze Thought Flow
+# Obsidian Daily Note and Journal Flow
 
-A core-plugin-only Obsidian journaling workflow modeled on the supplied iPhone screenshots.
+A cross-platform Obsidian workflow for a general Daily Note with standalone guided journal entries.
 
 ## What this package provides
 
-- A short **Check-in** inserted into the current Daily Note.
-- A separate **Analyze Thought** guided-journal note launched from the Check-in.
-- Date-scoped folders that keep the Daily Note, guided journals, and attachments together.
-- An optional CSS snippet that gives the notes a restrained teal, card-based appearance on iPhone and macOS.
-- No community plugins and no JavaScript.
+- A general Daily Note with sections for schedule, activities, journal links, thoughts, notes, and tasks.
+- Standalone **Check-in** and **Analyze Thought** notes stored under dated `Journal` folders.
+- Persisted canonical links from each Daily Note to its journal entries.
+- A QuickAdd workflow that runs on macOS and iOS.
+- Date-scoped folders that keep general and journal-specific attachments separate.
+- An optional CSS snippet for a restrained teal, card-based appearance.
 
 ## Recommended vault structure
 
 ```text
+Daily/
+└── 2026-08-13/
+    └── 2026-08-13.md
+
 Journal/
 └── 2026-08-13/
-    ├── 2026-08-13 Journal.md
-    ├── 2026-08-13 0746 Analyze Thought.md
-    └── Attachments/
-        └── pasted-image.png
+    ├── 2026-08-13 0742 Check-in.md
+    └── 2026-08-13 0746 Analyze Thought.md
 
 Templates/
+├── Daily Note.md
 └── Journal/
-    ├── Daily Note.md
     ├── Check-in.md
     └── Analyze Thought.md
 ```
 
-This preserves the structure already present in the vault while making it systematic. Date-first filenames sort cleanly and remain easy to find with Alfred. The guided-journal type appears in the filename; moods, emotions, and optional titles remain inside notes rather than leaking into Finder or Alfred result names.
+The Daily Note is the general day-level workspace. Journal entries are specialized child notes in a separate domain folder. The Journal folder is created lazily when the first journal workflow runs.
 
 ## Workflow
 
 1. Open today's Daily Note.
-2. Under **Check-ins**, insert `Templates/Journal/Check-in.md`.
-3. Select a mood, emotions, and contributing areas; optionally add a reflection or image.
-4. Select **Start Analyze Thought** when a difficult thought is contributing to the mood.
-5. Complete the separate four-step guided journal and rate whether the feeling is worse, the same, or better.
+2. Run the `New Check-in` or `New Analyze Thought` QuickAdd command.
+3. The standalone entry is created under `Journal/YYYY-MM-DD/`.
+4. The Daily Note receives one canonical link under the matching subtype heading.
+5. If the active note's date differs from the clock date, choose whether to use the active note or create/open today's Daily Note.
 
-## Core-only limitations
+The same commands and synced Markdown user script work on macOS and iOS.
 
-The core Templates plugin inserts static Markdown. It does not provide conditional branching, required-field validation, hidden wizard pages, automatic property updates, or clickable sentence-starter buttons. This package approximates the app flow with ordered sections, checkboxes, foldable callouts, a launch URI, and optional CSS.
+## Plugins
 
-Checkbox choices are ordinary Markdown tasks. The CSS snippet prevents completed choices from appearing struck through, but task-oriented searches or plugins may still treat them as tasks.
+Keep **Daily notes**, **Templates**, **Search**, and **Word count** enabled. Install and enable **QuickAdd**, then configure the two macros documented in [SETUP.md](SETUP.md).
 
 ## Start here
 
-Read [SETUP.md](SETUP.md), then copy the files from `Templates/Journal` and `Snippets` into the vault.
+Read [SETUP.md](SETUP.md), then copy `Templates`, `Scripts`, and `Snippets` into the vault.

@@ -1,6 +1,6 @@
 # Source Notes
 
-Documentation checked on 2026-08-17.
+Documentation checked on 2026-08-24.
 
 - Obsidian Templates: https://obsidian.md/help/plugins/templates
   - Template folder configuration
@@ -14,13 +14,18 @@ Documentation checked on 2026-08-17.
   - Templates
   - Date-format subfolders
 
+- QuickAdd for Obsidian: https://quickadd.obsidian.guide/docs/
+  - Template, Capture, Macro, and User Script choices
+  - Dynamic paths, same-folder creation, and created-file linking
+  - Markdown-note user scripts for mobile workflows
+  - User script API: https://quickadd.obsidian.guide/docs/UserScripts/
+
 - Obsidian Unique note creator: https://obsidian.md/help/plugins/unique-note
-  - Time-based unique notes
-  - Applying a template
+  - Core command behavior retained as optional, but not required by this workflow
 
 - Obsidian URI: https://obsidian.md/help/uri
-  - `obsidian://unique`
-  - Vault parameters and URI encoding
+  - Official `obsidian://new` and `obsidian://daily` actions
+  - No official `obsidian://unique` action
 
 - Obsidian Attachments: https://obsidian.md/help/attachments
   - Paste and drag-and-drop
