@@ -3,7 +3,7 @@ type: guided-journal
 journal: analyze-thought
 date: "{{date:YYYY-MM-DD}}"
 created: "{{date:YYYY-MM-DD}}T{{time:HH:mm:ss}}"
-daily_note: "[[Journal/{{date:YYYY-MM-DD}}/{{date:YYYY-MM-DD}} Journal]]"
+daily_note: "[[Daily/{{date:YYYY-MM-DD}}/{{date:YYYY-MM-DD}}]]"
 status: in-progress
 cssclasses:
   - journal-flow
@@ -14,7 +14,7 @@ tags:
 
 # Analyze Thought
 
-[[Journal/{{date:YYYY-MM-DD}}/{{date:YYYY-MM-DD}} Journal|Open today's Daily Note]]
+[[Daily/{{date:YYYY-MM-DD}}/{{date:YYYY-MM-DD}}|Open today's Daily Note]]
 
 > [!journal-progress] Step 1 of 4 · What unhelpful thought do you have?
 

@@ -1,4 +1,18 @@
-### {{time:HH:mm}} Check-in
+---
+type: check-in
+date: "{{date:YYYY-MM-DD}}"
+created: "{{date:YYYY-MM-DD}}T{{time:HH:mm:ss}}"
+daily_note: "[[Daily/{{date:YYYY-MM-DD}}/{{date:YYYY-MM-DD}}]]"
+cssclasses:
+  - journal-flow
+tags:
+  - journal/check-in
+---
+
+# Check-in · {{time:HH:mm}}
+
+[[Daily/{{date:YYYY-MM-DD}}/{{date:YYYY-MM-DD}}|Open today's Daily Note]]
+
 
 > [!journal-progress] Step 1 of 4 · How are you doing?
 > Select one.
@@ -81,8 +95,4 @@
 > [!journal-action] Check-in complete
 > Is a particular thought contributing to how you feel?
 >
-> [Start Analyze Thought](obsidian://unique?vault=Obsidian)
->
-> If the link does not create the guided note, run **Create new unique note** from the command palette.
-
----
+> Run the `New Analyze Thought` QuickAdd command. It creates a standalone guided note in this Daily Note's folder and adds its link under **Analyze Thoughts**.
