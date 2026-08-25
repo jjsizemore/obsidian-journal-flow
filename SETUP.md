@@ -39,6 +39,17 @@ Journal/
 
 No migration is required. Historical notes and inline check-ins remain untouched.
 
+## Agent-assisted installation
+
+An agent can apply the allowlisted files and documented config changes:
+
+```bash
+node setup/install.mjs --vault "/path/to/vault" --dry-run
+node setup/install.mjs --vault "/path/to/vault" --apply
+node setup/verify.mjs --vault "/path/to/vault"
+```
+
+The installer creates a timestamped backup before replacing files or updating `daily-notes.json` / `community-plugins.json`. It preserves unknown config keys. It intentionally does not rewrite QuickAdd `data.json`; that schema-sensitive step is verified or reported for UI configuration. Read `AGENTS.md` and `setup/manifest.json` before automating installation.
 ## 2. Enable plugins
 
 Enable these core plugins:
