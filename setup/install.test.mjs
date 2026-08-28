@@ -43,3 +43,26 @@ test("installer preserves unknown config keys and backs up replacements", async 
     await rm(backup, { recursive: true, force: true });
   }
 });
+
+test("installer merges community plugins even when QuickAdd is not yet installed", async () => {
+  const vault = await mkdtemp(path.join(os.tmpdir(), "journal-flow-vault-"));
+  const backup = await mkdtemp(path.join(os.tmpdir(), "journal-flow-backup-"));
+  try {
+    await mkdir(path.join(vault, ".obsidian"), { recursive: true });
+    await writeFile(path.join(vault, ".obsidian/community-plugins.json"), JSON.stringify(["existing-plugin"]));
+
+    const { stdout } = await exec(
+      process.execPath,
+      [path.join(repoRoot, "setup/install.mjs"), "--vault", vault, "--apply", "--backup-dir", backup],
+      { cwd: repoRoot },
+    );
+
+    assert.match(stdout, /REPORT QuickAdd is not installed; install it before enabling QuickAdd; Journal Flow Click Guard can be enabled independently\./);
+    const communityPlugins = JSON.parse(await readFile(path.join(vault, ".obsidian/community-plugins.json"), "utf8"));
+    assert.deepEqual(communityPlugins, ["existing-plugin", "quickadd", "journal-flow-click-guard"]);
+    await readFile(path.join(vault, ".obsidian/plugins/journal-flow-click-guard/manifest.json"));
+  } finally {
+    await rm(vault, { recursive: true, force: true });
+    await rm(backup, { recursive: true, force: true });
+  }
+});

@@ -44,7 +44,7 @@ The same commands and synced Markdown user script work on macOS and iOS.
 
 ## Plugins
 
-Keep **Daily notes**, **Templates**, **Search**, and **Word count** enabled. Install and enable **QuickAdd**, then configure the two macros documented in [SETUP.md](SETUP.md). Enable **Journal Flow Click Guard** to prevent accidental Live Preview edits when clicking card backgrounds.
+Keep **Daily notes**, **Templates**, **Search**, and **Word count** enabled. Install and enable **QuickAdd** from Community plugins, then configure the two macros documented in [SETUP.md](SETUP.md). Enable **Journal Flow Click Guard** under **Installed plugins** (it is a local homebrewed plugin that never appears in public Community search; reload plugins after copying) to prevent accidental Live Preview edits when clicking card backgrounds.
 
 ## Agent-assisted installation
 
