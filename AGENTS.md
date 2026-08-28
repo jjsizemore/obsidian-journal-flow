@@ -14,3 +14,5 @@ When asked to install or configure this workflow in an Obsidian vault:
 10. Do not claim macOS/iOS UAT; ask the user to perform it.
 
 The installer changes only the manifest allowlist and documented config files. It never edits workspace state, credentials, or unrelated vault content.
+
+After every repository change, run the repo-local `auditing-agent-installation-guidance` skill before closeout. Record its applicability decision and proof bundle; stop on any blocking contradiction or unproven safety claim.

@@ -29,7 +29,10 @@ test("installer preserves unknown config keys and backs up replacements", async 
       format: "YYYY-MM-DD/YYYY-MM-DD",
       custom: true,
     });
-    assert.deepEqual(JSON.parse(await readFile(path.join(vault, ".obsidian/community-plugins.json"), "utf8")), ["other-plugin", "quickadd"]);
+    assert.deepEqual(JSON.parse(await readFile(path.join(vault, ".obsidian/community-plugins.json"), "utf8")), ["other-plugin", "quickadd", "journal-flow-click-guard"]);
+    await readFile(path.join(vault, ".obsidian/plugins/journal-flow-click-guard/manifest.json"));
+    await readFile(path.join(vault, ".obsidian/plugins/journal-flow-click-guard/main.js"));
+    await readFile(path.join(vault, ".obsidian/plugins/journal-flow-click-guard/card-click-guard.js"));
     await readFile(path.join(backup, ".obsidian/daily-notes.json"));
     await readFile(path.join(backup, ".obsidian/community-plugins.json"));
     await rm(path.join(vault, ".obsidian/community-plugins.json"));

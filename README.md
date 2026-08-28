@@ -8,7 +8,7 @@ A cross-platform Obsidian workflow for a general Daily Note with standalone guid
 - Standalone **Check-in** and **Analyze Thought** notes stored under dated `Journal` folders.
 - Persisted canonical links from each Daily Note to its journal entries.
 - A QuickAdd workflow that runs on macOS and iOS.
-- Date-scoped folders that keep general and journal-specific attachments separate.
+- The Click Guard plugin prevents accidental Live Preview edits on card backgrounds while preserving controls, labels, and links. Use Ctrl+click (Cmd+click on macOS), Alt+click, or double-click to intentionally edit card text.
 - An optional CSS snippet for a restrained teal, card-based appearance.
 
 ## Recommended vault structure
@@ -44,7 +44,7 @@ The same commands and synced Markdown user script work on macOS and iOS.
 
 ## Plugins
 
-Keep **Daily notes**, **Templates**, **Search**, and **Word count** enabled. Install and enable **QuickAdd**, then configure the two macros documented in [SETUP.md](SETUP.md).
+Keep **Daily notes**, **Templates**, **Search**, and **Word count** enabled. Install and enable **QuickAdd**, then configure the two macros documented in [SETUP.md](SETUP.md). Enable **Journal Flow Click Guard** to prevent accidental Live Preview edits when clicking card backgrounds.
 
 ## Agent-assisted installation
 
@@ -60,4 +60,4 @@ The installer backs up and merges documented config files. QuickAdd `data.json` 
 
 ## Start here
 
-Read [SETUP.md](SETUP.md), then copy `Templates`, `Scripts`, and `Snippets` into the vault.
+Read [SETUP.md](SETUP.md), then copy `Templates`, `Scripts`, `Snippets`, and `Plugins` into the vault.
