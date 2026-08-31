@@ -108,7 +108,7 @@ async function chooseDailyNote(params, today, allowCreate) {
   const { app, quickAddApi } = params;
   const dailyNotes = app.vault
     .getMarkdownFiles()
-    .filter((file) => isDailyNote(app, file))
+    .filter((file) => isDailyNote(app, file) && dailyDate(app, file))
     .sort((a, b) => dailyDate(app, b).localeCompare(dailyDate(app, a)));
 
   const firstLabel = allowCreate

@@ -24,6 +24,12 @@ Scripts/
 
 Snippets/
 └── journal-flow.css
+
+Plugins/
+└── journal-flow-click-guard/
+    ├── manifest.json
+    ├── main.js
+    └── card-click-guard.js
 ```
 
 The package also includes a `Vault Overlay` folder that mirrors these destinations.
@@ -59,7 +65,9 @@ Enable these core plugins:
 - Search
 - Word count
 
-Install and enable **QuickAdd**. The package includes the plugin files under `.obsidian/plugins/quickadd/`, but QuickAdd still needs to be enabled in Obsidian.
+Install and enable **QuickAdd** from Obsidian's Community plugins. QuickAdd is not bundled in this repository; the installer only installs the Journal Flow files and Click Guard plugin.
+
+Enable **Journal Flow Click Guard** after installation. It is a local homebrewed plugin, so it never appears in the public Browse Community Plugins search; after running the installer or copying files, click **Reload plugins** (or restart Obsidian) and it appears under **Installed plugins**. It blocks primary clicks on journal card backgrounds in Live Preview so they do not focus the underlying Markdown editor. Checkboxes, radio-card labels, links, and other interactive controls remain usable. Use Ctrl+click (Cmd+click on macOS), Alt+click, or double-click to intentionally edit card text. The plugin has no effect in Reading view.
 
 QuickAdd documentation: <https://quickadd.obsidian.guide/docs/>
 

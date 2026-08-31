@@ -30,21 +30,20 @@ operations.push({
   content: `${JSON.stringify(await mergedDailyNotesConfig(dailyConfigPath), null, 2)}\n`,
 });
 
+const communityPluginsPath = path.resolve(vault, manifest.config.communityPlugins.destination);
+operations.push({
+  kind: "config",
+  destination: communityPluginsPath,
+  content: `${JSON.stringify(await mergedCommunityPlugins(communityPluginsPath), null, 2)}\n`,
+});
+
 const quickAddManifest = path.resolve(vault, ".obsidian/plugins/quickadd/manifest.json");
-if (await exists(quickAddManifest)) {
-  const communityPluginsPath = path.resolve(vault, manifest.config.communityPlugins.destination);
-  operations.push({
-    kind: "config",
-    destination: communityPluginsPath,
-    content: `${JSON.stringify(await mergedCommunityPlugins(communityPluginsPath), null, 2)}\n`,
-  });
-}
 
 for (const operation of operations) {
   console.log(`${args.apply ? "APPLY" : "PLAN"} ${operation.kind} ${path.relative(vault, operation.destination)}`);
 }
 console.log(`BACKUP ${backupDir}`);
-if (!(await exists(quickAddManifest))) console.log("REPORT QuickAdd is not installed; install it before enabling the community plugin.");
+if (!(await exists(quickAddManifest))) console.log("REPORT QuickAdd is not installed; install it before enabling QuickAdd; Journal Flow Click Guard can be enabled independently.");
 console.log("REPORT QuickAdd data.json is schema-sensitive; verify/configure its macros in Obsidian UI if verify reports them missing.");
 
 if (!args.apply) process.exit(0);

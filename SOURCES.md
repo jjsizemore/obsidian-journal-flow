@@ -2,6 +2,17 @@
 
 Documentation checked on 2026-08-24.
 
+## Installed QuickAdd provenance
+
+- Release: [QuickAdd 2.23.0](https://github.com/chhoumann/quickadd/releases/tag/2.23.0)
+- Install reason: required by the Journal Flow QuickAdd macros.
+- `main.js` SHA-256: `accdb8c8baa8ca66831f4bfcdb008ad342bfefcda0da0ba27a1a00e31eeed3ae`
+- `manifest.json` SHA-256: `648394b37751f374398a22adaf41f273531b9363484875b4c5de735969e2dd24`
+- `styles.css` SHA-256: `7e986b1fd842ae9aa2cda92e0ce3e1796adb482adc3404b5adbd819eaac6967`
+- Vault verification: 0 failures, 1 warning; the warning is the absent schema-sensitive `data.json`.
+- Macro configuration and macOS/iOS UAT are not agent-applicable; both remain required in Obsidian.
+
+
 - Obsidian Templates: https://obsidian.md/help/plugins/templates
   - Template folder configuration
   - `{{title}}`, `{{date}}`, and `{{time}}`
