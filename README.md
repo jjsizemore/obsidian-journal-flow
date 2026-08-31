@@ -48,15 +48,17 @@ Keep **Daily notes**, **Templates**, **Search**, and **Word count** enabled. Ins
 
 ## Agent-assisted installation
 
-Read `AGENTS.md` and `setup/manifest.json`, then run:
+Read `AGENTS.md` and `setup/manifest.json`. Get the exact active-vault path from the running Obsidian console with `app.vault.adapter.basePath`, canonicalize it, and never infer a parent or child vault. Enumerate and record ancestor/descendant `.obsidian` roots as separate candidates; with runtime identity and direct `<canonical-active-vault>/.obsidian` present, do not stop merely because other roots exist. Stop only when runtime identity is unavailable, the direct config is absent, or the path cannot be proved.
+
+Show the complete dry-run, then obtain authorization repeating that exact canonical path before applying:
 
 ```bash
-node setup/install.mjs --vault "/path/to/vault" --dry-run
-node setup/install.mjs --vault "/path/to/vault" --apply
-node setup/verify.mjs --vault "/path/to/vault"
+node setup/install.mjs --vault "<canonical-active-vault>" --dry-run
+node setup/install.mjs --vault "<canonical-active-vault>" --apply
+node setup/verify.mjs --vault "<canonical-active-vault>"
 ```
 
-The installer backs up and merges documented config files. QuickAdd `data.json` remains a schema-sensitive UI step unless an approved schema is available.
+After apply, fully restart/reload Obsidian, confirm Click Guard under Installed plugins and with the developer-console registry checks in `AGENTS.md`. QuickAdd `data.json` remains a schema-sensitive UI step unless an approved schema is available.
 
 ## Start here
 

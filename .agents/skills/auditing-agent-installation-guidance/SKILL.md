@@ -45,6 +45,7 @@ Work from the repository root and discover these inputs yourself. Record paths, 
 6. **Mirrors:** same-scope overlays, generated/canonical copies, directory links, symlinks, and other configured mirror targets. Record realpath, link status, existence, and byte hash. A symlink in the mirror root or any source-path component is a conflict unless the governing leaf explicitly permits it.
 7. **Implementation and validators:** installer dry-run/apply behavior, verifier, tests, CI commands, schema checks, and their exact invocation. Confirm every claimed safeguard is actually exercised.
 8. **Manual steps:** required plugin installation/enabling, UI configuration, hotkeys, reloads, platform UAT, schema-sensitive actions, credentials, and any step the agent cannot safely perform.
+9. **Active-vault proof:** before any apply, require `app.vault.adapter.basePath` from the running Obsidian process, canonicalize it, enumerate ancestor/descendant `.obsidian` roots, and record them as separate vault candidates. Stop only when runtime identity is unavailable, the exact path lacks direct `.obsidian`, or the path cannot be proved. Never infer a parent or child vault.
 
 ## Ordered audit
 
@@ -59,6 +60,7 @@ For each discovered statement or artifact, record its role: canonical instructio
 ### 3. Reconcile source to destination, in order
 
 Reconcile, without skipping ahead, in this order:
+Active-vault proof is a prerequisite to destination reconciliation and any apply: record the raw `app.vault.adapter.basePath`, canonical path, candidate `.obsidian` roots, exact dry-run path/plan, and path-repeating authorization. A direct `.obsidian` at the canonical runtime path is sufficient even when ancestor/descendant candidates exist. After apply, require full restart/reload, Installed plugins confirmation, both plugin registry checks, then verifier output.
 
 1. **Source:** every manifest entry resolves beneath the declared `sourceRoot`, exists as a regular file, and is not an accidental symlink. Record source hash.
 2. **Destination:** normalize each destination relative to the intended install root; prove it remains contained and matches the manifest exactly. Record overwrite/config policy and destination hash when available.
