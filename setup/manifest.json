@@ -8,8 +8,8 @@
     { "source": "Scripts/Journal Flow.md", "destination": "Scripts/Journal Flow.md" },
     { "source": "Snippets/journal-flow.css", "destination": ".obsidian/snippets/journal-flow.css" },
     { "source": "Plugins/journal-flow-click-guard/manifest.json", "destination": ".obsidian/plugins/journal-flow-click-guard/manifest.json" },
-    { "source": "Plugins/journal-flow-click-guard/main.js", "destination": ".obsidian/plugins/journal-flow-click-guard/main.js" },
-    { "source": "Plugins/journal-flow-click-guard/card-click-guard.js", "destination": ".obsidian/plugins/journal-flow-click-guard/card-click-guard.js" }
+    { "source": "Plugins/journal-flow-click-guard/card-click-guard.js", "destination": ".obsidian/plugins/journal-flow-click-guard/card-click-guard.js" },
+    { "source": "Plugins/journal-flow-click-guard/main.js", "destination": ".obsidian/plugins/journal-flow-click-guard/main.js" }
   ],
   "config": {
     "dailyNotes": {

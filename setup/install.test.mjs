@@ -66,3 +66,17 @@ test("installer merges community plugins even when QuickAdd is not yet installed
     await rm(backup, { recursive: true, force: true });
   }
 });
+
+test("copies Click Guard dependencies before its main entrypoint", async () => {
+  const manifest = JSON.parse(await readFile(path.join(repoRoot, "setup/manifest.json"), "utf8"));
+  const destinations = manifest.files.map(({ destination }) => destination);
+  const pluginManifest = destinations.indexOf(".obsidian/plugins/journal-flow-click-guard/manifest.json");
+  const helper = destinations.indexOf(".obsidian/plugins/journal-flow-click-guard/card-click-guard.js");
+  const main = destinations.indexOf(".obsidian/plugins/journal-flow-click-guard/main.js");
+
+  assert.ok(pluginManifest >= 0);
+  assert.ok(helper >= 0);
+  assert.ok(main >= 0);
+  assert.ok(pluginManifest < main);
+  assert.ok(helper < main);
+});
