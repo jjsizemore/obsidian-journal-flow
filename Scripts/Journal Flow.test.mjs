@@ -167,6 +167,25 @@ test("creates both entry types in Journal beside the Daily Note and persists sub
   assert.match(await vault.read(analyzeThought), /daily_note: "\[\[Daily\//);
 });
 
+
+test("ignores daily-note candidates without a sortable date", async () => {
+  const { app, vault } = seedVault();
+  const undated = vault.add("Daily/undated.md", "---\ntype: daily-note\n---\n\n# Undated\n");
+  const alsoUndated = vault.add("Daily/also-undated.md", "---\ntype: daily-note\n---\n\n# Also undated\n");
+  vault.files = new Map([
+    [undated.path, undated],
+    [alsoUndated.path, alsoUndated],
+    ...[...vault.files].filter(([path]) => path !== undated.path && path !== alsoUndated.path),
+  ]);
+  app.workspace.activeFile = vault.add("Notes/Inbox.md", "# Inbox\n");
+  const params = { app, quickAddApi: makeQuickAdd(), obsidian: {} };
+  const automation = loadAutomation();
+
+  await automation.analyzeThought(params);
+
+  assert.equal(vault.getMarkdownFiles().filter((file) => file.parent.path.startsWith("Journal/")).length, 1);
+});
+
 test("uses a suffix for collisions and re-links an unlinked retry without duplicating", async () => {
   const { app, daily, vault } = seedVault();
   const automation = loadAutomation();
