@@ -110,7 +110,7 @@ Daily/2026-08-13/2026-08-13.md
 
 Creating a Daily Note does not create a Journal folder or Journal entry. The Journal folder is created only when a journal workflow runs.
 
-The Daily Note contains general sections for Schedule, Activities, Journal, Thoughts, Notes, and Tasks. The Journal section contains managed Check-ins and Analyze Thoughts subsections. Obsidian headings are foldable on macOS and iOS.
+The Daily Note is organized around **Tasks → Notes → Journal**. Add a **Schedule** heading after Tasks when needed; it is not included in the default template. Activities and thoughts belong under Notes. The Journal section retains its managed Check-ins and Analyze Thoughts subsections. Run guided commands from the command palette, a hotkey, or the mobile toolbar. Obsidian headings are foldable on macOS and iOS.
 
 ## 5. Configure QuickAdd
 

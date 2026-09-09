@@ -4,7 +4,7 @@ A cross-platform Obsidian workflow for a general Daily Note with standalone guid
 
 ## What this package provides
 
-- A general Daily Note with sections for schedule, activities, journal links, thoughts, notes, and tasks.
+- A general Daily Note organized by **Tasks → Notes → Journal**; add a **Schedule** heading after Tasks when needed, with activities/thoughts grouped under Notes.
 - Standalone **Check-in** and **Analyze Thought** notes stored under dated `Journal` folders.
 - Persisted canonical links from each Daily Note to its journal entries.
 - A QuickAdd workflow that runs on macOS and iOS.
@@ -40,7 +40,7 @@ The Daily Note is the general day-level workspace. Journal entries are specializ
 4. The Daily Note receives one canonical link under the matching subtype heading.
 5. If the active note's date differs from the clock date, choose whether to use the active note or create/open today's Daily Note.
 
-The same commands and synced Markdown user script work on macOS and iOS.
+The same commands and synced Markdown user script work on macOS and iOS. Guided commands are available through the existing command palette, custom hotkeys, or the mobile toolbar; the Daily Note does not require or provide executable button cards.
 
 ## Plugins
 
