@@ -41,3 +41,7 @@ The installation is complete only when the raw and canonical running-vault paths
 The installer changes only the manifest allowlist and documented config files. It never edits workspace state, credentials, or unrelated vault content.
 
 After every repository change, run the repo-local `auditing-agent-installation-guidance` skill before closeout. Record its applicability decision and proof bundle; stop on any blocking contradiction or unproven safety claim.
+
+## PR delivery
+
+Target PRs at `dev`, not the GitHub default `main`. For image evidence, keep existing private image repositories private; check `gh pr comment --help` for native attachment support before declaring a browser-only blocker. Publish only approved images and verify the returned attachment is retrievable for the PR's audience.
