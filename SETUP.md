@@ -18,29 +18,29 @@ Do not treat the iCloud container or a directory merely containing `.obsidian` a
 
 ## 1. Copy the package files
 
-Copy these folders into the vault:
+For manual installation, copy the contents of `Vault Overlay/`, including its hidden `.obsidian` folder, into the verified active-vault root. `setup/manifest.json` is authoritative for every destination.
+Merge the listed files into existing folders; never replace the `.obsidian` directory. Back up destination files before overwriting; use the installer below for timestamped backups and config updates.
 
 ```text
-Templates/
-├── Daily Note.md
-└── Journal/
-    ├── Check-in.md
-    └── Analyze Thought.md
-
-Scripts/
-└── Journal Flow.md
-
-Snippets/
-└── journal-flow.css
-
-Plugins/
-└── journal-flow-click-guard/
-    ├── manifest.json
-    ├── main.js
-    └── card-click-guard.js
+Vault Overlay/
+├── Templates/
+│   ├── Daily Note.md
+│   └── Journal/
+│       ├── Check-in.md
+│       └── Analyze Thought.md
+├── Scripts/
+│   └── Journal Flow.md
+└── .obsidian/
+    ├── snippets/
+    │   └── journal-flow.css
+    └── plugins/
+        └── journal-flow-click-guard/
+            ├── manifest.json
+            ├── main.js
+            └── card-click-guard.js
 ```
 
-The package also includes a `Vault Overlay` folder that mirrors these destinations.
+Do not copy the canonical root `Plugins/` directory wholesale; it is source material, not the manual destination tree.
 
 Existing Journal notes remain in place:
 

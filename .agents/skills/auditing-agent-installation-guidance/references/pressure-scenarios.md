@@ -23,6 +23,23 @@ $ git diff -- SETUP.md | grep 'package includes the plugin files under `.obsidia
 
 This is a pressure scenario, not permission to change the user vault. A passing implementation must preserve the fail-closed boundary and emit the proof bundle described by the skill.
 
+## Mirror and graph-index regression cases
+
+### Valid copied mirror and absent graph index
+
+Create a contained, non-symlink regular-file `Vault Overlay/` counterpart for a manifest source with an identical SHA-256 hash. The checkout has no configured graph index or supported repository graph-update command.
+
+**RED classification against the pre-repair clauses:**
+
+- `SKILL.md:67` calls the valid real-file/real-directory copy mirror a conflict, so reconciliation falsely ends `STOP` despite containment and byte parity.
+- `SKILL.md:119` requires `rtk graphify update .` unconditionally, so a repo-only audit without a configured index is directed to run an unsupported graph update rather than record `not configured`.
+
+**GREEN classification after repair:** the contained, non-symlink, byte-identical declared `Vault Overlay/` copy is permitted; graph validation is `not configured` with no index generation or install. This does not authorize a vault write.
+
+### Mirror safety matrix
+
+Each of these remains `STOP`: a missing copied mirror, a byte-divergent copied mirror, any symlink in the mirror root or source-path component, and a mirror with unknown ownership. Preserve the conflict for explicit ownership review; do not overwrite it or bypass it with a fallback copy.
+
 ## Required pressure coverage
 
 1. Near miss: ordinary installation help, documentation editing, or stale-guidance repair alone does not activate this audit.

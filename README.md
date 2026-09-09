@@ -62,4 +62,4 @@ After apply, fully restart/reload Obsidian, confirm Click Guard under Installed 
 
 ## Start here
 
-Read [SETUP.md](SETUP.md), then copy `Templates`, `Scripts`, `Snippets`, and `Plugins` into the vault.
+Read [SETUP.md](SETUP.md) for verified-vault installation and the manifest-authoritative destination instructions.
