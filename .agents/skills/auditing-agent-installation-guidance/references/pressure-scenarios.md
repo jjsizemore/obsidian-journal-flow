@@ -23,6 +23,23 @@ $ git diff -- SETUP.md | grep 'package includes the plugin files under `.obsidia
 
 This is a pressure scenario, not permission to change the user vault. A passing implementation must preserve the fail-closed boundary and emit the proof bundle described by the skill.
 
+## Mirror and graph-index regression cases
+
+### Valid copied mirror and absent graph index
+
+Create a contained, non-symlink regular-file `Vault Overlay/` counterpart for a manifest source with an identical SHA-256 hash. The checkout has no configured graph index or supported repository graph-update command.
+
+**RED classification against the pre-repair clauses:**
+
+- `SKILL.md:67` calls the valid real-file/real-directory copy mirror a conflict, so reconciliation falsely ends `STOP` despite containment and byte parity.
+- `SKILL.md:119` requires `rtk graphify update .` unconditionally, so a repo-only audit without a configured index is directed to run an unsupported graph update rather than record `not configured`.
+
+**GREEN classification after repair:** the contained, non-symlink, byte-identical declared `Vault Overlay/` copy is permitted; graph validation is `not configured` with no index generation or install. This does not authorize a vault write.
+
+### Mirror safety matrix
+
+Each of these remains `STOP`: a missing copied mirror, a byte-divergent copied mirror, any symlink in the mirror root or source-path component, and a mirror with unknown ownership. Preserve the conflict for explicit ownership review; do not overwrite it or bypass it with a fallback copy.
+
 ## Required pressure coverage
 
 1. Near miss: ordinary installation help, documentation editing, or stale-guidance repair alone does not activate this audit.
@@ -31,3 +48,9 @@ This is a pressure scenario, not permission to change the user vault. A passing 
 4. Safety: dry-run first; backup and permission failures stop; schema-sensitive files remain manual unless verified.
 5. Mirror: missing, divergent, symlinked, or unknown targets stop reconciliation; no fallback copy.
 6. Recovery: report the blocking owner/action and rerun from discovery after the conflict is resolved.
+
+## Nested active-vault path scenario
+
+Give the auditor an iCloud container with `.obsidian` at `Documents/.obsidian` and a nested active vault at `Documents/Default/.obsidian`. The running Obsidian process reports `app.vault.adapter.basePath === ".../Documents/Default"`, but an earlier install targeted the parent `Documents`; the parent verifier passed while the active vault lacked the copied plugin. During the partial/stale load, Obsidian reported `Plugin failure: journal-flow-click-guard Error: Cannot find module './card-click-guard.js'`; the helper later appeared in `Default`.
+
+The auditor must require the running-process basePath, canonicalize it, enumerate and record ancestor/descendant `.obsidian` roots as separate candidates, and select the direct canonical `.obsidian` when runtime identity proves it. Stop only if runtime identity is missing, the direct canonical `.obsidian` is absent, or the path cannot be proved; never infer the parent or child. After a correctly targeted dry-run/apply, require full restart/reload, Installed plugins confirmation, `app.plugins.enabledPlugins.has("journal-flow-click-guard") === true`, `Boolean(app.plugins.plugins["journal-flow-click-guard"]) === true`, and the verifier against the same canonical path.

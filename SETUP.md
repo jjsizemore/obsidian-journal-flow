@@ -1,38 +1,46 @@
 # Setup: Obsidian Daily Note and Journal Flow
 
-Designed for the vault at:
+The vault root is the exact folder opened in Obsidian. On iCloud, this may be a nested directory such as `Documents/Default`; do not infer a parent or child vault from filesystem layout. Confirm the running vault with `app.vault.adapter.basePath`, canonicalize it, and use that exact path for installation.
+
+Keep `Daily`, `Journal`, `Templates`, and `Scripts` as subfolders of this vault; do not add them as separate vaults. Before applying changes, follow the active-vault identity gate in `AGENTS.md`: record ancestor/descendant `.obsidian` roots as separate candidates and stop only if runtime identity is unavailable, the direct canonical `.obsidian` is absent, or the path cannot be proved.
+
+The logical structure is:
 
 ```text
-iCloud Drive/obsidian
+<active-vault>/
+├── Daily/
+├── Journal/
+├── Templates/
+└── Scripts/
 ```
 
-Open the top-level `obsidian` folder as the vault on both macOS and iOS. Keep `Daily`, `Journal`, `Templates`, and `Scripts` as subfolders of this vault; do not add them as separate vaults.
+Do not treat the iCloud container or a directory merely containing `.obsidian` as proof that it is the running vault.
 
 ## 1. Copy the package files
 
-Copy these folders into the vault:
+For manual installation, copy the contents of `Vault Overlay/`, including its hidden `.obsidian` folder, into the verified active-vault root. `setup/manifest.json` is authoritative for every destination.
+Merge the listed files into existing folders; never replace the `.obsidian` directory. Back up destination files before overwriting; use the installer below for timestamped backups and config updates.
 
 ```text
-Templates/
-├── Daily Note.md
-└── Journal/
-    ├── Check-in.md
-    └── Analyze Thought.md
-
-Scripts/
-└── Journal Flow.md
-
-Snippets/
-└── journal-flow.css
-
-Plugins/
-└── journal-flow-click-guard/
-    ├── manifest.json
-    ├── main.js
-    └── card-click-guard.js
+Vault Overlay/
+├── Templates/
+│   ├── Daily Note.md
+│   └── Journal/
+│       ├── Check-in.md
+│       └── Analyze Thought.md
+├── Scripts/
+│   └── Journal Flow.md
+└── .obsidian/
+    ├── snippets/
+    │   └── journal-flow.css
+    └── plugins/
+        └── journal-flow-click-guard/
+            ├── manifest.json
+            ├── main.js
+            └── card-click-guard.js
 ```
 
-The package also includes a `Vault Overlay` folder that mirrors these destinations.
+Do not copy the canonical root `Plugins/` directory wholesale; it is source material, not the manual destination tree.
 
 Existing Journal notes remain in place:
 
@@ -45,17 +53,17 @@ Journal/
 
 No migration is required. Historical notes and inline check-ins remain untouched.
 
-## Agent-assisted installation
+An agent can apply the allowlisted files and documented config changes only after completing the active-vault identity gate in `AGENTS.md`. Obtain `app.vault.adapter.basePath` from the running Obsidian process, canonicalize it, and use that exact path; never infer a parent or child vault.
 
-An agent can apply the allowlisted files and documented config changes:
+Show the complete dry-run for that canonical path, then obtain authorization that repeats the exact path before applying:
 
 ```bash
-node setup/install.mjs --vault "/path/to/vault" --dry-run
-node setup/install.mjs --vault "/path/to/vault" --apply
-node setup/verify.mjs --vault "/path/to/vault"
+node setup/install.mjs --vault "<canonical-active-vault>" --dry-run
+node setup/install.mjs --vault "<canonical-active-vault>" --apply
+node setup/verify.mjs --vault "<canonical-active-vault>"
 ```
 
-The installer creates a timestamped backup before replacing files or updating `daily-notes.json` / `community-plugins.json`. It preserves unknown config keys. It intentionally does not rewrite QuickAdd `data.json`; that schema-sensitive step is verified or reported for UI configuration. Read `AGENTS.md` and `setup/manifest.json` before automating installation.
+After applying, fully restart/reload Obsidian, confirm the plugin under Installed plugins and in the developer-console registry, then run the verifier. The installer creates a timestamped backup before replacing files or updating `daily-notes.json` / `community-plugins.json`. It preserves unknown config keys. It intentionally does not rewrite QuickAdd `data.json`; that schema-sensitive step remains UI configuration.
 ## 2. Enable plugins
 
 Enable these core plugins:
@@ -102,7 +110,7 @@ Daily/2026-08-13/2026-08-13.md
 
 Creating a Daily Note does not create a Journal folder or Journal entry. The Journal folder is created only when a journal workflow runs.
 
-The Daily Note contains general sections for Schedule, Activities, Journal, Thoughts, Notes, and Tasks. The Journal section contains managed Check-ins and Analyze Thoughts subsections. Obsidian headings are foldable on macOS and iOS.
+The Daily Note is organized around **Tasks → Notes → Journal**. Add a **Schedule** heading after Tasks when needed; it is not included in the default template. Activities and thoughts belong under Notes. The Journal section retains its managed Check-ins and Analyze Thoughts subsections. Run guided commands from the command palette, a hotkey, or the mobile toolbar. Obsidian headings are foldable on macOS and iOS.
 
 ## 5. Configure QuickAdd
 

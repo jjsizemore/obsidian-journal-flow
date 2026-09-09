@@ -4,7 +4,7 @@ A cross-platform Obsidian workflow for a general Daily Note with standalone guid
 
 ## What this package provides
 
-- A general Daily Note with sections for schedule, activities, journal links, thoughts, notes, and tasks.
+- A general Daily Note organized by **Tasks → Notes → Journal**; add a **Schedule** heading after Tasks when needed, with activities/thoughts grouped under Notes.
 - Standalone **Check-in** and **Analyze Thought** notes stored under dated `Journal` folders.
 - Persisted canonical links from each Daily Note to its journal entries.
 - A QuickAdd workflow that runs on macOS and iOS.
@@ -40,7 +40,7 @@ The Daily Note is the general day-level workspace. Journal entries are specializ
 4. The Daily Note receives one canonical link under the matching subtype heading.
 5. If the active note's date differs from the clock date, choose whether to use the active note or create/open today's Daily Note.
 
-The same commands and synced Markdown user script work on macOS and iOS.
+The same commands and synced Markdown user script work on macOS and iOS. Guided commands are available through the existing command palette, custom hotkeys, or the mobile toolbar; the Daily Note does not require or provide executable button cards.
 
 ## Plugins
 
@@ -48,16 +48,18 @@ Keep **Daily notes**, **Templates**, **Search**, and **Word count** enabled. Ins
 
 ## Agent-assisted installation
 
-Read `AGENTS.md` and `setup/manifest.json`, then run:
+Read `AGENTS.md` and `setup/manifest.json`. Get the exact active-vault path from the running Obsidian console with `app.vault.adapter.basePath`, canonicalize it, and never infer a parent or child vault. Enumerate and record ancestor/descendant `.obsidian` roots as separate candidates; with runtime identity and direct `<canonical-active-vault>/.obsidian` present, do not stop merely because other roots exist. Stop only when runtime identity is unavailable, the direct config is absent, or the path cannot be proved.
+
+Show the complete dry-run, then obtain authorization repeating that exact canonical path before applying:
 
 ```bash
-node setup/install.mjs --vault "/path/to/vault" --dry-run
-node setup/install.mjs --vault "/path/to/vault" --apply
-node setup/verify.mjs --vault "/path/to/vault"
+node setup/install.mjs --vault "<canonical-active-vault>" --dry-run
+node setup/install.mjs --vault "<canonical-active-vault>" --apply
+node setup/verify.mjs --vault "<canonical-active-vault>"
 ```
 
-The installer backs up and merges documented config files. QuickAdd `data.json` remains a schema-sensitive UI step unless an approved schema is available.
+After apply, fully restart/reload Obsidian, confirm Click Guard under Installed plugins and with the developer-console registry checks in `AGENTS.md`. QuickAdd `data.json` remains a schema-sensitive UI step unless an approved schema is available.
 
 ## Start here
 
-Read [SETUP.md](SETUP.md), then copy `Templates`, `Scripts`, `Snippets`, and `Plugins` into the vault.
+Read [SETUP.md](SETUP.md) for verified-vault installation and the manifest-authoritative destination instructions.

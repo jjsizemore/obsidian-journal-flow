@@ -6,11 +6,9 @@ Install the cross-platform Daily Note and standalone journal-entry workflow into
 
 ## Vault
 
-```text
-iCloud Drive/obsidian
-```
+The vault root is the exact folder opened in Obsidian. Obtain `app.vault.adapter.basePath` from the running Obsidian process, canonicalize it, and use that exact path. On iCloud this may be nested (for example `Documents/Default`); never infer a parent or child vault.
 
-Select the top-level `obsidian` folder when opening the vault. `Daily`, `Journal`, `Templates`, and `Scripts` are subfolders, not separate vaults. A macOS shell may expose the same folder through a private iCloud filesystem path, but that is not the path to enter in Obsidian or iOS.
+Before applying, enumerate and record `.obsidian` directories at the canonical path, every descendant, and every ancestor as separate vault candidates. A direct `<canonical-path>/.obsidian` is sufficient when runtime identity proves the path; stop only if runtime identity is unavailable, the direct `.obsidian` is absent, or the path cannot be proved. Follow the authorization, restart/reload, Installed plugins, registry, and verifier gates in `AGENTS.md`.
 
 ## Required package layout
 
