@@ -53,7 +53,7 @@ for (const operation of operations) {
   if (operation.kind === "config") console.log(operation.content.trimEnd());
 }
 console.log(`BACKUP ${backupDir}`);
-if (!(await exists(quickAddManifest)) || !(await exists(quickAddScript))) console.log("REPORT QuickAdd is not installed or is incomplete; install it before enabling QuickAdd; Journal Flow Click Guard can be enabled independently.");
+if (!(await exists(quickAddManifest)) || !(await exists(quickAddScript))) console.log("REPORT QuickAdd is not installed or is incomplete; install it before enabling QuickAdd.");
 console.log("REPORT QuickAdd data.json is schema-sensitive; verify/configure its macros in Obsidian UI if verify reports them missing.");
 
 if (!args.apply) process.exit(0);
@@ -64,7 +64,7 @@ for (const operation of operations) {
   if (operation.kind === "copy") await copyFile(operation.source, operation.destination);
   else await writeFile(operation.destination, operation.content, "utf8");
 }
-console.log("Installation applied. Fully restart/reload Obsidian, confirm Click Guard under Installed plugins, and complete the runtime registry checks in SETUP.md step 4. Then run:");
+console.log("Installation applied. Fully restart/reload Obsidian, and complete the remaining setup steps in SETUP.md. Then run:");
 console.log(`node setup/verify.mjs --vault '${vault.replaceAll("'", "'\\''")}'`);
 
 function parseArgs(argv) {

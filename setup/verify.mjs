@@ -101,7 +101,7 @@ if (await exists(path.resolve(vault, "Templates/Journal/Daily Note.md"))) {
 
 console.log("Pending manual work (not verified by this on-disk check):");
 for (const step of manifest.manualSteps) report("PENDING", step);
-console.log("Runtime identity and authorization remain required by AGENTS.md; restart/reload and plugin registry checks are documented in SETUP.md step 4.");
+console.log("Runtime identity and authorization remain required by AGENTS.md; restart/reload and manual steps are documented in SETUP.md.");
 console.log(`Verification complete: ${failures} failure(s), ${warnings} warning(s)`);
 process.exit(failures ? 1 : 0);
 

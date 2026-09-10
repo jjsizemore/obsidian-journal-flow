@@ -91,11 +91,8 @@ The [manifest](setup/manifest.json) is the source of truth for destinations. The
 | `Templates/Journal/Analyze Thought.md` | `Templates/Journal/Analyze Thought.md` |
 | `Scripts/Journal Flow.md` | `Scripts/Journal Flow.md` |
 | `Snippets/journal-flow.css` | `.obsidian/snippets/journal-flow.css` |
-| `Plugins/journal-flow-click-guard/manifest.json` | `.obsidian/plugins/journal-flow-click-guard/manifest.json` |
-| `Plugins/journal-flow-click-guard/main.js` | `.obsidian/plugins/journal-flow-click-guard/main.js` |
-| `Plugins/journal-flow-click-guard/card-click-guard.js` | `.obsidian/plugins/journal-flow-click-guard/card-click-guard.js` |
 
-The installer also merges `.obsidian/daily-notes.json` and `.obsidian/community-plugins.json`. Do not copy root-level `Snippets` or `Plugins` folders into your vault. The repository's `Vault Overlay` is a mirror, not a second installation route.
+The installer also merges `.obsidian/daily-notes.json` and `.obsidian/community-plugins.json`. Do not copy root-level `Snippets` folder into your vault. The repository's `Vault Overlay` is a mirror, not a second installation route.
 
 ## 4. Finish plugins and QuickAdd on the laptop
 
@@ -108,16 +105,6 @@ Fully quit and reopen Obsidian after applying. Keep these core plugins enabled u
 
 Under **Settings → Community plugins**, enable community plugins if prompted, then use **Browse** to install and enable **QuickAdd**. QuickAdd is not bundled in this repository.
 
-Enable **Journal Flow Click Guard** under **Installed plugins**. It is a local homebrewed plugin and never appears in public Community plugin search. If it is absent, check the installer result and restart Obsidian; do not search Browse for it.
-
-In the laptop developer console, record both checks:
-
-```js
-app.plugins.enabledPlugins.has("journal-flow-click-guard")
-Boolean(app.plugins.plugins["journal-flow-click-guard"])
-```
-
-Both must return `true`. This confirms the enabled list and loaded instance, rather than just plugin files on disk.
 
 ### Check Daily notes settings
 
@@ -162,7 +149,7 @@ Resolve every reported failure and required manual step. A successful on-disk ch
 1. Open the vault proved in step 2 and wait for the laptop changes to sync. Confirm the templates and `Scripts/Journal Flow.md` are present.
 2. For Obsidian Sync, recheck the per-device plugin and configuration categories in step 1. For iCloud, confirm you opened the same app-managed vault, not a local duplicate.
 3. Fully quit and reopen Obsidian on iPhone after plugin files/settings arrive.
-4. Confirm the required core plugins, **QuickAdd**, and **Journal Flow Click Guard** are enabled. QuickAdd can be installed from Browse if needed; Click Guard must arrive from the laptop installation and appears only under Installed plugins.
+4. Confirm the required core plugins and **QuickAdd** are enabled. QuickAdd can be installed from Browse if needed.
 5. Open the command palette and confirm **New Check-in** and **New Analyze Thought** are available. If the macros did not arrive, configure them through the QuickAdd UI exactly as in step 4; do not create another vault or rerun the installer on iPhone.
 
 If a required plugin or script is missing, stop and repair sync before running the workflow. A synced note alone does not prove that the hidden `.obsidian` plugin files or settings arrived. Hotkeys, mobile-toolbar placement, and styling are optional and documented below.
@@ -175,8 +162,7 @@ Perform these checks yourself in the actual apps; an agent can guide you but **C
 2. Run **New Check-in** and **New Analyze Thought** from the command palette. Confirm each creates a standalone note under `Journal/YYYY-MM-DD/`, with one link in the matching Daily Note subsection and a backlink to the Daily Note.
 3. Wait for sync. On iPhone, open that same Daily Note and follow both links. Confirm the entry contents match.
 4. On iPhone, run both commands and confirm the same folder/link behavior for the new entries. Return to the laptop after sync and confirm both iPhone-created notes and their Daily Note links arrived.
-5. In Live Preview on both devices, check that card backgrounds do not accidentally focus the editor while checkboxes, radio-card labels, and links still work. Confirm intentional editing remains possible. Click Guard does not affect Reading view.
-6. Record the desktop and iPhone results separately. Once the round trip is proved, remove only the temporary sync-check note you created in step 2.
+5. Record the desktop and iPhone results separately. Once the round trip is proved, remove only the temporary sync-check note you created in step 2.
 
 Setup is complete only after the identity/authorization/backup/restart evidence from `AGENTS.md`, verifier output, required UI configuration, and both device checks are recorded. Do not mark a missing check as passed. Wait for sync before switching devices; this workflow does not provide cross-device locking or replace backups.
 
@@ -201,7 +187,6 @@ Time format: HH:mm
 
 The Daily Note is a general day-level template; Check-in and Analyze Thought are specialized journal-entry templates under `Templates/Journal`. For this workflow, create Daily Notes through Daily notes and entries through QuickAdd rather than inserting raw templates.
 
-Click Guard blocks primary clicks on card backgrounds in Live Preview. Use Ctrl+click (Cmd+click on macOS), Alt+click, or double-click to intentionally edit card text. Checkboxes, radio-card labels, links, and other interactive controls remain usable. It has no effect in Reading view.
 
 ## Reference: use the workflow
 
