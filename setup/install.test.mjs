@@ -41,7 +41,7 @@ test("installer preserves unknown config keys and backs up replacements", async 
       custom: true,
     });
     assert.deepEqual(JSON.parse(await readFile(path.join(vault, ".obsidian/community-plugins.json"), "utf8")), ["other-plugin", "quickadd"]);
-    assert.equal(await exists(path.join(vault, ".obsidian/plugins/journal-flow-click-guard")), false);
+    assert.deepEqual(await readdir(path.join(vault, ".obsidian/plugins")), ["quickadd"]);
     assert.deepEqual(JSON.parse(await readFile(path.join(backup, ".obsidian/daily-notes.json"), "utf8")), { folder: "Old", template: "Old.md", format: "old", custom: true });
     assert.deepEqual(JSON.parse(await readFile(path.join(backup, ".obsidian/community-plugins.json"), "utf8")), ["other-plugin"]);
     assert.equal(await readFile(path.join(vault, ".obsidian/plugins/quickadd/data.json"), "utf8"), quickAddData);
@@ -69,7 +69,7 @@ test("installer merges community plugins even when QuickAdd is not yet installed
 
     const communityPlugins = JSON.parse(await readFile(path.join(vault, ".obsidian/community-plugins.json"), "utf8"));
     assert.deepEqual(communityPlugins, ["existing-plugin", "quickadd"]);
-    assert.equal(await exists(path.join(vault, ".obsidian/plugins/journal-flow-click-guard")), false);
+    assert.equal(await exists(path.join(vault, ".obsidian/plugins")), false);
     const verification = await exec(process.execPath, [path.join(repoRoot, "setup/verify.mjs"), "--vault", vault], { cwd: repoRoot });
     assert.match(verification.stdout, /WARN QuickAdd.*not installed/);
     assert.match(verification.stdout, /PASS community plugin configured on disk: quickadd/);
@@ -104,7 +104,6 @@ test("canonical preview is read-only and apply prints a shell-safe verifier comm
     assert.match(preview.stdout, /"template": "Templates\/Daily Note.md"/);
     assert.match(preview.stdout, /"format": "YYYY-MM-DD\/YYYY-MM-DD"/);
     assert.match(preview.stdout, /"quickadd"/);
-    assert.doesNotMatch(preview.stdout, /"journal-flow-click-guard"/);
     assert.deepEqual(await readdir(root, { recursive: true }), before);
     assert.equal(await readFile(path.join(vault, ".obsidian/daily-notes.json"), "utf8"), originalConfig);
     const applied = await exec(process.execPath, [path.join(repoRoot, "setup/install.mjs"), "--vault", alias, "--apply", "--backup-dir", backup], { cwd: repoRoot });
@@ -260,24 +259,21 @@ test("invalid community and QuickAdd JSON keeps the complete pending checklist a
   }
 });
 
-test("QuickAdd-only installation does not install or require Click Guard", async () => {
+test("installer configures only QuickAdd and creates no bundled plugin files", async () => {
   const root = await mkdtemp(path.join(os.tmpdir(), "journal-flow-quickadd-only-"));
   const vault = path.join(root, "vault");
   try {
     await mkdir(path.join(vault, ".obsidian"), { recursive: true });
-    const applied = await exec(
+    await exec(
       process.execPath,
       [path.join(repoRoot, "setup/install.mjs"), "--vault", vault, "--apply"],
       { cwd: repoRoot },
     );
-    assert.doesNotMatch(applied.stdout, /Click Guard/i);
-    assert.doesNotMatch(applied.stdout, /journal-flow-click-guard/i);
 
     const communityConfig = JSON.parse(await readFile(path.join(vault, ".obsidian/community-plugins.json"), "utf8"));
     assert.deepEqual(communityConfig, ["quickadd"]);
-    assert.equal(communityConfig.includes("journal-flow-click-guard"), false);
 
-    assert.equal(await exists(path.join(vault, ".obsidian/plugins/journal-flow-click-guard")), false);
+    assert.equal(await exists(path.join(vault, ".obsidian/plugins")), false);
 
     const verification = await exec(
       process.execPath,
@@ -285,8 +281,7 @@ test("QuickAdd-only installation does not install or require Click Guard", async
       { cwd: repoRoot },
     );
     assert.match(verification.stdout, /PASS community plugin configured on disk: quickadd/);
-    assert.doesNotMatch(verification.stdout, /journal-flow-click-guard/i);
-    assert.doesNotMatch(verification.stdout, /Click Guard/i);
+    assert.match(verification.stdout, /Verification complete: 0 failure\(s\)/);
   } finally {
     await rm(root, { recursive: true, force: true });
   }
