@@ -43,7 +43,7 @@ for (const operation of operations) {
   console.log(`${args.apply ? "APPLY" : "PLAN"} ${operation.kind} ${path.relative(vault, operation.destination)}`);
 }
 console.log(`BACKUP ${backupDir}`);
-if (!(await exists(quickAddManifest))) console.log("REPORT QuickAdd is not installed; install it before enabling QuickAdd; Journal Flow Click Guard can be enabled independently.");
+if (!(await exists(quickAddManifest))) console.log("REPORT QuickAdd is not installed; install it before enabling QuickAdd.");
 console.log("REPORT QuickAdd data.json is schema-sensitive; verify/configure its macros in Obsidian UI if verify reports them missing.");
 
 if (!args.apply) process.exit(0);

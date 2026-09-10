@@ -8,7 +8,7 @@ Install the cross-platform Daily Note and standalone journal-entry workflow into
 
 The vault root is the exact folder opened in Obsidian. Obtain `app.vault.adapter.basePath` from the running Obsidian process, canonicalize it, and use that exact path. On iCloud this may be nested (for example `Documents/Default`); never infer a parent or child vault.
 
-Before applying, enumerate and record `.obsidian` directories at the canonical path, every descendant, and every ancestor as separate vault candidates. A direct `<canonical-path>/.obsidian` is sufficient when runtime identity proves the path; stop only if runtime identity is unavailable, the direct `.obsidian` is absent, or the path cannot be proved. Follow the authorization, restart/reload, Installed plugins, registry, and verifier gates in `AGENTS.md`.
+Before applying, enumerate and record `.obsidian` directories at the canonical path, every descendant, and every ancestor as separate vault candidates. A direct `<canonical-path>/.obsidian` is sufficient when runtime identity proves the path; stop only if runtime identity is unavailable, the direct `.obsidian` is absent, or the path cannot be proved. Follow the authorization, restart/reload, and verifier gates in `AGENTS.md`.
 
 ## Required package layout
 
@@ -25,11 +25,6 @@ Scripts/
 Snippets/
 └── journal-flow.css
 
-Plugins/
-└── journal-flow-click-guard/
-    ├── manifest.json
-    ├── main.js
-    └── card-click-guard.js
 ```
 
 ## Required work
@@ -39,12 +34,11 @@ Plugins/
 3. Install specialized templates under `Templates/Journal/`.
 4. Install `Scripts/Journal Flow.md` under `Scripts/`.
 5. Create `.obsidian/snippets/` if needed and install `journal-flow.css`.
-6. Install and enable `journal-flow-click-guard` under `.obsidian/plugins/` when Live Preview card click protection is wanted; do not edit undocumented Obsidian configuration JSON.
-7. Install QuickAdd from Obsidian's Community plugins; it is not bundled. The installer only copies the Journal Flow package and Click Guard; do not edit undocumented Obsidian configuration JSON.
-8. Preserve existing `Journal/YYYY-MM-DD/` notes and historical inline check-ins.
-9. Back up conflicting target files before replacement.
-10. Validate Markdown frontmatter, script syntax, mirror parity, and CSS braces.
-11. Report remaining UI settings and macOS/iOS UAT steps.
+6. Install QuickAdd from Obsidian's Community plugins; it is not bundled. The installer only copies the Journal Flow package; do not edit undocumented Obsidian configuration JSON.
+7. Preserve existing `Journal/YYYY-MM-DD/` notes and historical inline check-ins.
+8. Back up conflicting target files before replacement.
+9. Validate Markdown frontmatter, script syntax, mirror parity, and CSS braces.
+10. Report remaining UI settings and macOS/iOS UAT steps.
 
 ## Target settings to report
 

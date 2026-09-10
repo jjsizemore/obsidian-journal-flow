@@ -31,16 +31,10 @@ Vault Overlay/
 ├── Scripts/
 │   └── Journal Flow.md
 └── .obsidian/
-    ├── snippets/
-    │   └── journal-flow.css
-    └── plugins/
-        └── journal-flow-click-guard/
-            ├── manifest.json
-            ├── main.js
-            └── card-click-guard.js
+    └── snippets/
+        └── journal-flow.css
 ```
 
-Do not copy the canonical root `Plugins/` directory wholesale; it is source material, not the manual destination tree.
 
 Existing Journal notes remain in place:
 
@@ -63,7 +57,7 @@ node setup/install.mjs --vault "<canonical-active-vault>" --apply
 node setup/verify.mjs --vault "<canonical-active-vault>"
 ```
 
-After applying, fully restart/reload Obsidian, confirm the plugin under Installed plugins and in the developer-console registry, then run the verifier. The installer creates a timestamped backup before replacing files or updating `daily-notes.json` / `community-plugins.json`. It preserves unknown config keys. It intentionally does not rewrite QuickAdd `data.json`; that schema-sensitive step remains UI configuration.
+After applying, fully restart/reload Obsidian, then run the verifier. The installer creates a timestamped backup before replacing files or updating `daily-notes.json` / `community-plugins.json`. It preserves unknown config keys. It intentionally does not rewrite QuickAdd `data.json`; that schema-sensitive step remains UI configuration.
 ## 2. Enable plugins
 
 Enable these core plugins:
@@ -73,9 +67,7 @@ Enable these core plugins:
 - Search
 - Word count
 
-Install and enable **QuickAdd** from Obsidian's Community plugins. QuickAdd is not bundled in this repository; the installer only installs the Journal Flow files and Click Guard plugin.
-
-Enable **Journal Flow Click Guard** after installation. It is a local homebrewed plugin, so it never appears in the public Browse Community Plugins search; after running the installer or copying files, click **Reload plugins** (or restart Obsidian) and it appears under **Installed plugins**. It blocks primary clicks on journal card backgrounds in Live Preview so they do not focus the underlying Markdown editor. Checkboxes, radio-card labels, links, and other interactive controls remain usable. Use Ctrl+click (Cmd+click on macOS), Alt+click, or double-click to intentionally edit card text. The plugin has no effect in Reading view.
+Install and enable **QuickAdd** from Obsidian's Community plugins. QuickAdd is not bundled in this repository; the installer only installs the Journal Flow files.
 
 QuickAdd documentation: <https://quickadd.obsidian.guide/docs/>
 

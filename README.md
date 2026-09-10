@@ -8,7 +8,6 @@ A cross-platform Obsidian workflow for a general Daily Note with standalone guid
 - Standalone **Check-in** and **Analyze Thought** notes stored under dated `Journal` folders.
 - Persisted canonical links from each Daily Note to its journal entries.
 - A QuickAdd workflow that runs on macOS and iOS.
-- The Click Guard plugin prevents accidental Live Preview edits on card backgrounds while preserving controls, labels, and links. Use Ctrl+click (Cmd+click on macOS), Alt+click, or double-click to intentionally edit card text.
 - An optional CSS snippet for a restrained teal, card-based appearance.
 
 ## Recommended vault structure
@@ -44,7 +43,7 @@ The same commands and synced Markdown user script work on macOS and iOS. Guided 
 
 ## Plugins
 
-Keep **Daily notes**, **Templates**, **Search**, and **Word count** enabled. Install and enable **QuickAdd** from Community plugins, then configure the two macros documented in [SETUP.md](SETUP.md). Enable **Journal Flow Click Guard** under **Installed plugins** (it is a local homebrewed plugin that never appears in public Community search; reload plugins after copying) to prevent accidental Live Preview edits when clicking card backgrounds.
+Keep **Daily notes**, **Templates**, **Search**, and **Word count** enabled. Install and enable **QuickAdd** from Community plugins, then configure the two macros documented in [SETUP.md](SETUP.md).
 
 ## Agent-assisted installation
 
@@ -58,7 +57,7 @@ node setup/install.mjs --vault "<canonical-active-vault>" --apply
 node setup/verify.mjs --vault "<canonical-active-vault>"
 ```
 
-After apply, fully restart/reload Obsidian, confirm Click Guard under Installed plugins and with the developer-console registry checks in `AGENTS.md`. QuickAdd `data.json` remains a schema-sensitive UI step unless an approved schema is available.
+After apply, fully restart/reload Obsidian, then run the verifier. QuickAdd `data.json` remains a schema-sensitive UI step unless an approved schema is available.
 
 ## Start here
 
