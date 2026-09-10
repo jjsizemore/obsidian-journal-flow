@@ -33,10 +33,13 @@
     }
   },
   "manualSteps": [
-    "Install QuickAdd if .obsidian/plugins/quickadd is absent",
-    "Enable QuickAdd in Obsidian",
-    "Assign optional desktop hotkeys and iOS mobile-toolbar commands",
-    "Reload and enable the journal-flow CSS snippet",
-    "Run macOS and iOS UAT"
+    "Required: choose iCloud or Obsidian Sync, not both for the same vault, and prove a temporary-note round trip between laptop and iPhone (SETUP.md steps 1-2)",
+    "Required: enable Daily notes, Templates, Search, and Word count in Obsidian",
+    "Required: install QuickAdd from Community plugins and enable it; QuickAdd is not bundled",
+    "Required: configure and enable the New Check-in and New Analyze Thought Macro choices as commands in QuickAdd UI; do not rewrite data.json",
+    "Required: finish iPhone sync and plugin setup, restart the app, and confirm both commands are available (SETUP.md step 5)",
+    "Required: perform the desktop and iPhone acceptance checklist and confirm journal entries and Daily Note links sync both ways; CLI verification does not prove iOS UAT (SETUP.md step 6)",
+    "Optional: assign conflict-free desktop hotkeys and iOS mobile-toolbar commands",
+    "Optional: reload and enable the journal-flow CSS snippet on each device"
   ]
 }
