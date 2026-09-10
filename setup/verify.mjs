@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { readFile, stat } from "node:fs/promises";
+import { readFile, realpath, stat } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -13,7 +13,9 @@ if (!args.vault) {
   process.exit(2);
 }
 
-const vault = path.resolve(args.vault);
+const vault = await realpath(args.vault);
+if (!(await stat(path.join(vault, ".obsidian"))).isDirectory()) throw new Error(`Not an Obsidian vault (missing .obsidian directory): ${vault}`);
+console.log(`VAULT ${vault}`);
 let failures = 0;
 let warnings = 0;
 
@@ -32,40 +34,63 @@ for (const file of manifest.files) {
   } else report("PASS", file.destination);
 }
 
-const dailyConfig = await readJson(path.resolve(vault, manifest.config.dailyNotes.destination));
-const expectedDailyConfig = manifest.config.dailyNotes.content;
-const dailyConfigMatches = Object.entries(expectedDailyConfig).every(([key, value]) => dailyConfig[key] === value);
-if (!dailyConfigMatches) {
-  report("FAIL", "Daily Notes config is missing or has incorrect manifest keys");
+try {
+  const dailyConfig = await readJson(path.resolve(vault, manifest.config.dailyNotes.destination));
+  const expectedDailyConfig = manifest.config.dailyNotes.content;
+  if (!dailyConfig || Array.isArray(dailyConfig) || typeof dailyConfig !== "object" ||
+      !Object.entries(expectedDailyConfig).every(([key, value]) => dailyConfig[key] === value)) {
+    throw new Error("expected a JSON object with the manifest's Daily notes settings");
+  }
+  report("PASS", "Daily Notes config");
+} catch (error) {
+  report("FAIL", `Daily Notes config (${manifest.config.dailyNotes.destination}): ${error.message}; review Settings → Daily notes against SETUP.md`);
   failures += 1;
-} else report("PASS", "Daily Notes config");
+}
 
 const communityPluginsPath = path.resolve(vault, manifest.config.communityPlugins.destination);
 if (!(await exists(communityPluginsPath))) {
   report("WARN", "community-plugins.json is missing; enable QuickAdd in Obsidian after installing it");
   warnings += 1;
 } else {
-  const plugins = await readJson(communityPluginsPath);
-  for (const plugin of manifest.config.communityPlugins.required) {
-    if (!Array.isArray(plugins) || !plugins.includes(plugin)) {
-      report("FAIL", `community plugin is not enabled: ${plugin}`);
-      failures += 1;
-    } else report("PASS", `community plugin enabled: ${plugin}`);
+  try {
+    const plugins = await readJson(communityPluginsPath);
+    if (!Array.isArray(plugins)) throw new Error("expected a JSON array");
+    for (const plugin of manifest.config.communityPlugins.required) {
+      if (!plugins.includes(plugin)) {
+        report("FAIL", `community plugin missing from on-disk configuration: ${plugin}; enable it in Obsidian after installing it`);
+        failures += 1;
+      } else report("PASS", `community plugin configured on disk: ${plugin}`);
+    }
+  } catch (error) {
+    report("FAIL", `community-plugins.json cannot be verified: ${error.message}; review Settings → Community plugins`);
+    failures += 1;
   }
 }
+
+const quickAddDirectory = path.resolve(vault, path.dirname(manifest.config.quickAddData.destination));
+if (!(await exists(path.join(quickAddDirectory, "manifest.json"))) || !(await exists(path.join(quickAddDirectory, "main.js")))) {
+  report("WARN", "QuickAdd is not installed or is incomplete; install it from Settings → Community plugins");
+  warnings += 1;
+} else report("PASS", "QuickAdd installation files present (runtime activation still requires Obsidian UI verification)");
 
 const quickAddDataPath = path.resolve(vault, manifest.config.quickAddData.destination);
 if (!(await exists(quickAddDataPath))) {
   report("WARN", "QuickAdd data.json is missing; create or enable the two macros in Obsidian");
   warnings += 1;
 } else {
-  const quickAddData = await readJson(quickAddDataPath);
-  for (const [macroName, target] of Object.entries(manifest.config.quickAddData.requiredMacros)) {
-    const found = findMacroTarget(quickAddData, macroName, target);
-    if (!found) {
-      report("WARN", `QuickAdd macro needs UI verification: ${macroName} -> ${target}`);
-      warnings += 1;
-    } else report("PASS", `QuickAdd macro: ${macroName}`);
+  try {
+    const quickAddData = await readJson(quickAddDataPath);
+    if (!quickAddData || Array.isArray(quickAddData) || typeof quickAddData !== "object") throw new Error("expected a JSON object");
+    for (const [macroName, target] of Object.entries(manifest.config.quickAddData.requiredMacros)) {
+      const found = findMacroTarget(quickAddData, macroName, target);
+      if (!found) {
+        report("WARN", `QuickAdd macro needs UI verification: ${macroName} -> ${target}`);
+        warnings += 1;
+      } else report("PASS", `QuickAdd macro: ${macroName}`);
+    }
+  } catch (error) {
+    report("WARN", `QuickAdd data.json cannot be verified: ${error.message}; review both macros in the QuickAdd UI without rewriting data.json`);
+    warnings += 1;
   }
 }
 
@@ -74,6 +99,9 @@ if (await exists(path.resolve(vault, "Templates/Journal/Daily Note.md"))) {
   warnings += 1;
 }
 
+console.log("Pending manual work (not verified by this on-disk check):");
+for (const step of manifest.manualSteps) report("PENDING", step);
+console.log("Runtime identity and authorization remain required by AGENTS.md; restart/reload and plugin registry checks are documented in SETUP.md step 4.");
 console.log(`Verification complete: ${failures} failure(s), ${warnings} warning(s)`);
 process.exit(failures ? 1 : 0);
 

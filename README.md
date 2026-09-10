@@ -2,12 +2,28 @@
 
 A cross-platform Obsidian workflow for a general Daily Note with standalone guided journal entries.
 
+## Start here: laptop and iPhone
+
+Follow [SETUP.md](SETUP.md) from the beginning. **This package does not sync notes.** First connect one vault across your devices using **iCloud** (Mac and iPhone) or **Obsidian Sync** (a paid subscription, including other laptop platforms). Never run both sync services on the same vault.
+
+The setup guide walks you through six checkpoints:
+
+1. Choose a sync route and open the same vault on both devices.
+2. Prove a temporary note syncs in both directions.
+3. Install once from the laptop into its proven active vault, after reviewing the dry-run and authorizing that exact path.
+4. Install QuickAdd and configure the two commands in Obsidian.
+5. Finish plugin and command setup on iPhone.
+6. Create entries on both devices and verify their synced links.
+
+Node.js is needed only on the laptop. You do not run the installer on iPhone or manually copy the repository folders into a vault. Agents must also follow the identity and authorization gate in [AGENTS.md](AGENTS.md); the destination allowlist is [setup/manifest.json](setup/manifest.json).
+
 ## What this package provides
 
-- A general Daily Note organized by **Tasks → Notes → Journal**; add a **Schedule** heading after Tasks when needed, with activities/thoughts grouped under Notes.
+- A general Daily Note with sections for schedule, activities, journal links, thoughts, notes, and tasks.
 - Standalone **Check-in** and **Analyze Thought** notes stored under dated `Journal` folders.
 - Persisted canonical links from each Daily Note to its journal entries.
 - A QuickAdd workflow that runs on macOS and iOS.
+- The Click Guard plugin prevents accidental Live Preview edits on card backgrounds while preserving controls, labels, and links. Use Ctrl+click (Cmd+click on macOS), Alt+click, or double-click to intentionally edit card text.
 - An optional CSS snippet for a restrained teal, card-based appearance.
 
 ## Recommended vault structure
@@ -39,26 +55,8 @@ The Daily Note is the general day-level workspace. Journal entries are specializ
 4. The Daily Note receives one canonical link under the matching subtype heading.
 5. If the active note's date differs from the clock date, choose whether to use the active note or create/open today's Daily Note.
 
-The same commands and synced Markdown user script work on macOS and iOS. Guided commands are available through the existing command palette, custom hotkeys, or the mobile toolbar; the Daily Note does not require or provide executable button cards.
+The Markdown user script is designed for macOS and iOS. Both devices need the plugin files, enabled plugins, and QuickAdd configuration as well as synced notes; the setup checklist verifies these separately.
 
 ## Plugins
 
-Keep **Daily notes**, **Templates**, **Search**, and **Word count** enabled. Install and enable **QuickAdd** from Community plugins, then configure the two macros documented in [SETUP.md](SETUP.md).
-
-## Agent-assisted installation
-
-Read `AGENTS.md` and `setup/manifest.json`. Get the exact active-vault path from the running Obsidian console with `app.vault.adapter.basePath`, canonicalize it, and never infer a parent or child vault. Enumerate and record ancestor/descendant `.obsidian` roots as separate candidates; with runtime identity and direct `<canonical-active-vault>/.obsidian` present, do not stop merely because other roots exist. Stop only when runtime identity is unavailable, the direct config is absent, or the path cannot be proved.
-
-Show the complete dry-run, then obtain authorization repeating that exact canonical path before applying:
-
-```bash
-node setup/install.mjs --vault "<canonical-active-vault>" --dry-run
-node setup/install.mjs --vault "<canonical-active-vault>" --apply
-node setup/verify.mjs --vault "<canonical-active-vault>"
-```
-
-After apply, fully restart/reload Obsidian, then run the verifier. QuickAdd `data.json` remains a schema-sensitive UI step unless an approved schema is available.
-
-## Start here
-
-Read [SETUP.md](SETUP.md) for verified-vault installation and the manifest-authoritative destination instructions.
+Keep **Daily notes**, **Templates**, **Search**, and **Word count** enabled. Install and enable **QuickAdd** from Community plugins, then configure the two macros documented in [SETUP.md](SETUP.md). Enable **Journal Flow Click Guard** under **Installed plugins** (it is a local homebrewed plugin that never appears in public Community search; restart Obsidian after installation) to prevent accidental Live Preview edits when clicking card backgrounds.
