@@ -6,10 +6,7 @@
     { "source": "Templates/Journal/Check-in.md", "destination": "Templates/Journal/Check-in.md" },
     { "source": "Templates/Journal/Analyze Thought.md", "destination": "Templates/Journal/Analyze Thought.md" },
     { "source": "Scripts/Journal Flow.md", "destination": "Scripts/Journal Flow.md" },
-    { "source": "Snippets/journal-flow.css", "destination": ".obsidian/snippets/journal-flow.css" },
-    { "source": "Plugins/journal-flow-click-guard/manifest.json", "destination": ".obsidian/plugins/journal-flow-click-guard/manifest.json" },
-    { "source": "Plugins/journal-flow-click-guard/main.js", "destination": ".obsidian/plugins/journal-flow-click-guard/main.js" },
-    { "source": "Plugins/journal-flow-click-guard/card-click-guard.js", "destination": ".obsidian/plugins/journal-flow-click-guard/card-click-guard.js" }
+    { "source": "Snippets/journal-flow.css", "destination": ".obsidian/snippets/journal-flow.css" }
   ],
   "config": {
     "dailyNotes": {
@@ -24,7 +21,7 @@
     "communityPlugins": {
       "destination": ".obsidian/community-plugins.json",
       "policy": "update-with-backup",
-      "required": ["quickadd", "journal-flow-click-guard"]
+      "required": ["quickadd"]
     },
     "quickAddData": {
       "destination": ".obsidian/plugins/quickadd/data.json",
@@ -38,7 +35,6 @@
   "manualSteps": [
     "Install QuickAdd if .obsidian/plugins/quickadd is absent",
     "Enable QuickAdd in Obsidian",
-    "Enable Journal Flow Click Guard in Obsidian",
     "Assign optional desktop hotkeys and iOS mobile-toolbar commands",
     "Reload and enable the journal-flow CSS snippet",
     "Run macOS and iOS UAT"

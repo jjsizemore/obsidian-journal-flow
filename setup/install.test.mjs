@@ -29,10 +29,7 @@ test("installer preserves unknown config keys and backs up replacements", async 
       format: "YYYY-MM-DD/YYYY-MM-DD",
       custom: true,
     });
-    assert.deepEqual(JSON.parse(await readFile(path.join(vault, ".obsidian/community-plugins.json"), "utf8")), ["other-plugin", "quickadd", "journal-flow-click-guard"]);
-    await readFile(path.join(vault, ".obsidian/plugins/journal-flow-click-guard/manifest.json"));
-    await readFile(path.join(vault, ".obsidian/plugins/journal-flow-click-guard/main.js"));
-    await readFile(path.join(vault, ".obsidian/plugins/journal-flow-click-guard/card-click-guard.js"));
+    assert.deepEqual(JSON.parse(await readFile(path.join(vault, ".obsidian/community-plugins.json"), "utf8")), ["other-plugin", "quickadd"]);
     await readFile(path.join(backup, ".obsidian/daily-notes.json"));
     await readFile(path.join(backup, ".obsidian/community-plugins.json"));
     await rm(path.join(vault, ".obsidian/community-plugins.json"));
@@ -44,7 +41,7 @@ test("installer preserves unknown config keys and backs up replacements", async 
   }
 });
 
-test("installer merges community plugins even when QuickAdd is not yet installed", async () => {
+test("installer adds QuickAdd even when it is not yet installed", async () => {
   const vault = await mkdtemp(path.join(os.tmpdir(), "journal-flow-vault-"));
   const backup = await mkdtemp(path.join(os.tmpdir(), "journal-flow-backup-"));
   try {
@@ -57,10 +54,9 @@ test("installer merges community plugins even when QuickAdd is not yet installed
       { cwd: repoRoot },
     );
 
-    assert.match(stdout, /REPORT QuickAdd is not installed; install it before enabling QuickAdd; Journal Flow Click Guard can be enabled independently\./);
+    assert.match(stdout, /REPORT QuickAdd is not installed; install it before enabling QuickAdd\./);
     const communityPlugins = JSON.parse(await readFile(path.join(vault, ".obsidian/community-plugins.json"), "utf8"));
-    assert.deepEqual(communityPlugins, ["existing-plugin", "quickadd", "journal-flow-click-guard"]);
-    await readFile(path.join(vault, ".obsidian/plugins/journal-flow-click-guard/manifest.json"));
+    assert.deepEqual(communityPlugins, ["existing-plugin", "quickadd"]);
   } finally {
     await rm(vault, { recursive: true, force: true });
     await rm(backup, { recursive: true, force: true });

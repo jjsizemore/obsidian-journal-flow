@@ -17,17 +17,9 @@ The running Obsidian process is the source of truth for the vault path. Before a
 Only after that gate:
 
 6. Apply with `node setup/install.mjs --vault "<canonical-path>" --apply`; it creates a timestamped backup before replacing files.
-7. Fully quit and reopen Obsidian (or use the complete plugin reload flow) before validation. Confirm **Settings → Community plugins → Installed plugins** shows `journal-flow-click-guard` enabled.
-8. In the running Obsidian developer console, show:
+7. Fully quit and reopen Obsidian (or use the complete plugin reload flow), then run `node setup/verify.mjs --vault "<canonical-path>"` and report every manual step it returns.
 
-```js
-app.plugins.enabledPlugins.has("journal-flow-click-guard")
-Boolean(app.plugins.plugins["journal-flow-click-guard"])
-```
-
-Both results must be `true`. Then run `node setup/verify.mjs --vault "<canonical-path>"` and report every manual step it returns.
-
-The installation is complete only when the raw and canonical running-vault paths, candidate enumeration, shown dry-run, path-repeating authorization, apply/backup result, full restart/reload, Installed plugins confirmation, both registry results, and verifier output are recorded. A missing item is incomplete, not an invitation to infer.
+The installation is complete only when the raw and canonical running-vault paths, candidate enumeration, shown dry-run, path-repeating authorization, apply/backup result, full restart/reload, and verifier output are recorded. A missing item is incomplete, not an invitation to infer.
 
 ## Installation invariants
 
