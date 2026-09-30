@@ -3,7 +3,7 @@ type: guided-journal
 journal: analyze-thought
 date: "2026-08-13"
 created: "2026-08-13T08:14:00"
-daily_note: "[[Daily/2026-08-13/2026-08-13]]"
+daily_note: "[[Daily/2026-08-13/2026-08-13 Daily]]"
 status: complete
 cssclasses:
   - journal-flow

@@ -6,15 +6,23 @@ Use this note as a QuickAdd user script. The script stays in a Markdown note so 
 const JOURNAL_HEADING = "## Journal";
 const JOURNAL_SUBTITLE = "*Links to standalone guided entries only.*";
 const DAILY_NOTE_TEMPLATE = "Templates/Daily Note.md";
-const DAILY_NOTE_PATH = /^Daily\/(\d{4}-\d{2}-\d{2})\/\1\.md$/;
+const DAILY_NOTE_PATH = /^Daily\/(\d{4}-\d{2}-\d{2})\/\1 Daily\.md$/;
 
 const ENTRY_TYPES = {
   "check-in": {
-    label: "Check-in",
+    label: "Check-In",
     frontmatterType: "check-in",
     template: "Templates/Journal/Check-in.md",
     heading: "### Check-ins",
     subtitle: "*Short state check-ins.*",
+  },
+  "practice-gratitude": {
+    label: "Practice Gratitude",
+    frontmatterType: "guided-journal",
+    journal: "practice-gratitude",
+    template: "Templates/Journal/Practice Gratitude.md",
+    heading: "### Practice Gratitude",
+    subtitle: "*Gratitude reflections.*",
   },
   "analyze-thought": {
     label: "Analyze Thought",
@@ -28,6 +36,7 @@ const ENTRY_TYPES = {
 
 module.exports = {
   checkIn: (params) => createEntry(params, "check-in"),
+  practiceGratitude: (params) => createEntry(params, "practice-gratitude"),
   analyzeThought: (params) => createEntry(params, "analyze-thought"),
 };
 
@@ -161,7 +170,7 @@ function dailyDate(app, file) {
 }
 
 function findDailyNote(app, date) {
-  const exactPath = `Daily/${date}/${date}.md`;
+  const exactPath = `Daily/${date}/${date} Daily.md`;
   const exact = app.vault.getAbstractFileByPath(exactPath);
   if (exact && isDailyNote(app, exact)) return exact;
   return undefined;
@@ -179,7 +188,7 @@ async function getOrCreateDailyNote(app, date) {
   if (parent && !app.vault.getAbstractFileByPath(parent)) await app.vault.createFolder(parent);
   if (!app.vault.getAbstractFileByPath(folder)) await app.vault.createFolder(folder);
 
-  const path = `${folder}/${date}.md`;
+  const path = `${folder}/${date} Daily.md`;
   const current = app.vault.getAbstractFileByPath(path);
   if (current) return current;
 
@@ -199,9 +208,8 @@ async function createEntryFile(app, dailyNote, definition) {
 
   const now = new Date();
   const date = dailyDate(app, dailyNote);
-  const time = `${pad(now.getHours())}${pad(now.getMinutes())}`;
-  const baseName = `${date} ${time} ${definition.label}`;
-  const folder = `Journal/${date}`;
+  const baseName = `${date} ${definition.label}`;
+  const folder = `Daily/${date}/journal`;
   await ensureFolder(app, folder);
   const path = await availablePath(app, folder, baseName);
   const raw = await app.vault.read(template);
@@ -224,7 +232,7 @@ async function findUnlinkedEntries(app, dailyNote, definition) {
   const dailyContent = await app.vault.read(dailyNote);
   const dailyFiles = app.vault
     .getMarkdownFiles()
-    .filter((file) => file.parent.path === `Journal/${date}`);
+    .filter((file) => file.parent.path === `Daily/${date}/journal`);
 
   return dailyFiles.filter((file) => {
     const frontmatter = app.metadataCache.getFileCache(file)?.frontmatter;
@@ -271,6 +279,9 @@ function ensureManagedHeadings(content) {
       "",
       "### Check-ins",
       ENTRY_TYPES["check-in"].subtitle,
+      "",
+      "### Practice Gratitude",
+      ENTRY_TYPES["practice-gratitude"].subtitle,
       "",
       "### Analyze Thoughts",
       ENTRY_TYPES["analyze-thought"].subtitle,

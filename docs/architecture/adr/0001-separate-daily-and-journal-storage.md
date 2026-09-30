@@ -1,6 +1,6 @@
 # ADR-0001: Separate Daily Notes from Journal Entries
 
-- Status: Accepted
+- Status: Superseded by ADR-0002
 - Date: 2026-08-25
 
 ## Decision

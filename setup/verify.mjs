@@ -75,7 +75,7 @@ if (!(await exists(path.join(quickAddDirectory, "manifest.json"))) || !(await ex
 
 const quickAddDataPath = path.resolve(vault, manifest.config.quickAddData.destination);
 if (!(await exists(quickAddDataPath))) {
-  report("WARN", "QuickAdd data.json is missing; create or enable the two macros in Obsidian");
+  report("WARN", "QuickAdd data.json is missing; create or enable the three macros in Obsidian");
   warnings += 1;
 } else {
   try {
@@ -89,7 +89,7 @@ if (!(await exists(quickAddDataPath))) {
       } else report("PASS", `QuickAdd macro: ${macroName}`);
     }
   } catch (error) {
-    report("WARN", `QuickAdd data.json cannot be verified: ${error.message}; review both macros in the QuickAdd UI without rewriting data.json`);
+    report("WARN", `QuickAdd data.json cannot be verified: ${error.message}; review all three macros in the QuickAdd UI without rewriting data.json`);
     warnings += 1;
   }
 }

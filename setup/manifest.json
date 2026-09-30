@@ -4,6 +4,7 @@
   "files": [
     { "source": "Templates/Daily Note.md", "destination": "Templates/Daily Note.md" },
     { "source": "Templates/Journal/Check-in.md", "destination": "Templates/Journal/Check-in.md" },
+    { "source": "Templates/Journal/Practice Gratitude.md", "destination": "Templates/Journal/Practice Gratitude.md" },
     { "source": "Templates/Journal/Analyze Thought.md", "destination": "Templates/Journal/Analyze Thought.md" },
     { "source": "Scripts/Journal Flow.md", "destination": "Scripts/Journal Flow.md" },
     { "source": "Snippets/journal-flow.css", "destination": ".obsidian/snippets/journal-flow.css" }
@@ -15,7 +16,7 @@
       "content": {
         "folder": "Daily",
         "template": "Templates/Daily Note.md",
-        "format": "YYYY-MM-DD/YYYY-MM-DD"
+        "format": "YYYY-MM-DD/YYYY-MM-DD [Daily]"
       }
     },
     "communityPlugins": {
@@ -27,7 +28,8 @@
       "destination": ".obsidian/plugins/quickadd/data.json",
       "policy": "schema-sensitive-ui-step",
       "requiredMacros": {
-        "New Check-in": "Scripts/Journal Flow.md::checkIn",
+        "New Check-In": "Scripts/Journal Flow.md::checkIn",
+        "New Practice Gratitude": "Scripts/Journal Flow.md::practiceGratitude",
         "New Analyze Thought": "Scripts/Journal Flow.md::analyzeThought"
       }
     }
@@ -36,8 +38,8 @@
     "Required: choose iCloud or Obsidian Sync, not both for the same vault, and prove a temporary-note round trip between laptop and iPhone (SETUP.md steps 1-2)",
     "Required: enable Daily notes, Templates, Search, and Word count in Obsidian",
     "Required: install QuickAdd from Community plugins and enable it; QuickAdd is not bundled",
-    "Required: configure and enable the New Check-in and New Analyze Thought Macro choices as commands in QuickAdd UI; do not rewrite data.json",
-    "Required: finish iPhone sync and plugin setup, restart the app, and confirm both commands are available (SETUP.md step 5)",
+    "Required: configure and enable the New Check-In, New Practice Gratitude, and New Analyze Thought Macro choices as commands in QuickAdd UI; do not rewrite data.json",
+    "Required: finish iPhone sync and plugin setup, restart the app, and confirm all three commands are available (SETUP.md step 5)",
     "Required: perform the desktop and iPhone acceptance checklist and confirm journal entries and Daily Note links sync both ways; CLI verification does not prove iOS UAT (SETUP.md step 6)",
     "Optional: assign conflict-free desktop hotkeys and iOS mobile-toolbar commands",
     "Optional: reload and enable the journal-flow CSS snippet on each device"

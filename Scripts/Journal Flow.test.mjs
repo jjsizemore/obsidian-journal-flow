@@ -33,7 +33,7 @@ function localDate(date) {
 }
 
 function journalFolderForDaily(file) {
-  return `Journal/${file.path.split("/")[1]}`;
+  return `Daily/${file.path.split("/")[1]}/journal`;
 }
 
 class MockVault {
@@ -132,39 +132,52 @@ function makeQuickAdd() {
 
 function seedVault(date = localDate(new Date())) {
   const vault = new MockVault();
-  const dailyPath = `Daily/${date}/${date}.md`;
+  const dailyPath = `Daily/${date}/${date} Daily.md`;
   const daily = vault.add(
     dailyPath,
-    `---\ntype: daily-note\ndate: "${date}"\n---\n\n# Daily\n\n## Journal\n*Links to standalone guided entries only.*\n\n### Check-ins\n*Short state check-ins.*\n\n### Analyze Thoughts\n*Structured thought-reflection entries.*\n`,
+    `---\ntype: daily-note\ndate: "${date}"\n---\n\n# Daily\n\n## Journal\n*Links to standalone guided entries only.*\n\n### Check-ins\n*Short state check-ins.*\n\n### Practice Gratitude\n*Gratitude reflections.*\n\n### Analyze Thoughts\n*Structured thought-reflection entries.*\n`,
   );
   vault.add("Templates/Daily Note.md", readFileSync(new URL("../Templates/Daily Note.md", import.meta.url), "utf8"));
   vault.add("Templates/Journal/Check-in.md", readFileSync(new URL("../Templates/Journal/Check-in.md", import.meta.url), "utf8"));
+  vault.add("Templates/Journal/Practice Gratitude.md", readFileSync(new URL("../Templates/Journal/Practice Gratitude.md", import.meta.url), "utf8"));
   vault.add("Templates/Journal/Analyze Thought.md", readFileSync(new URL("../Templates/Journal/Analyze Thought.md", import.meta.url), "utf8"));
   return { daily, vault, app: makeApp(vault, daily) };
 }
 
-test("creates both entry types in Journal beside the Daily Note and persists subtype links", async () => {
+test("creates all journal types under the Daily date folder with links in the matching sections", async () => {
   const { app, daily, vault } = seedVault();
   const automation = loadAutomation();
   const params = { app, quickAddApi: makeQuickAdd(), obsidian: {} };
 
   await automation.checkIn(params);
+  await automation.practiceGratitude(params);
   await automation.analyzeThought(params);
 
   const entries = vault.getMarkdownFiles().filter((file) => file.parent.path === journalFolderForDaily(daily));
-  assert.equal(entries.length, 2);
-  assert.ok(entries.some((file) => file.basename.includes("Check-in")));
-  assert.ok(entries.some((file) => file.basename.includes("Analyze Thought")));
+  const date = daily.path.split("/")[1];
+  assert.deepEqual(entries.map((file) => file.basename).sort(), [
+    `${date} Analyze Thought`,
+    `${date} Check-In`,
+    `${date} Practice Gratitude`,
+  ]);
 
   const dailyContent = await vault.read(daily);
-  const checkIn = entries.find((file) => file.basename.includes("Check-in"));
+  const checkIn = entries.find((file) => file.basename.includes("Check-In"));
+  const gratitude = entries.find((file) => file.basename.includes("Practice Gratitude"));
   const analyzeThought = entries.find((file) => file.basename.includes("Analyze Thought"));
   const checkInLink = `- [[${checkIn.path.replace(/\.md$/, "")}|${checkIn.basename}]]`;
+  const gratitudeLink = `- [[${gratitude.path.replace(/\.md$/, "")}|${gratitude.basename}]]`;
   const analyzeThoughtLink = `- [[${analyzeThought.path.replace(/\.md$/, "")}|${analyzeThought.basename}]]`;
   assert.ok(dailyContent.indexOf(checkInLink) > dailyContent.indexOf("### Check-ins"));
-  assert.ok(dailyContent.indexOf(checkInLink) < dailyContent.indexOf("### Analyze Thoughts"));
+  assert.ok(dailyContent.indexOf(checkInLink) < dailyContent.indexOf("### Practice Gratitude"));
+  assert.ok(dailyContent.indexOf(gratitudeLink) > dailyContent.indexOf("### Practice Gratitude"));
+  assert.ok(dailyContent.indexOf(gratitudeLink) < dailyContent.indexOf("### Analyze Thoughts"));
   assert.ok(dailyContent.indexOf(analyzeThoughtLink) > dailyContent.indexOf("### Analyze Thoughts"));
   assert.match(await vault.read(analyzeThought), /daily_note: "\[\[Daily\//);
+  const gratitudeContent = await vault.read(gratitude);
+  assert.equal(frontmatter(gratitudeContent).journal, "practice-gratitude");
+  assert.equal(frontmatter(gratitudeContent).daily_note, `[[${daily.path.replace(/\.md$/, "")}]]`);
+  assert.match(gratitudeContent, /## What are you grateful for\?/);
 });
 
 test("analyzeThought creates a linked standalone Journal note", async () => {
@@ -176,9 +189,9 @@ test("analyzeThought creates a linked standalone Journal note", async () => {
 
   await automation.analyzeThought(params);
 
-  const entries = vault.getMarkdownFiles().filter((file) => file.parent.path === `Journal/${date}`);
+  const entries = vault.getMarkdownFiles().filter((file) => file.parent.path === `Daily/${date}/journal`);
   assert.equal(entries.length, 1);
-  assert.match(entries[0].basename, new RegExp(`^${date} \\d{4} Analyze Thought$`));
+  assert.equal(entries[0].basename, `${date} Analyze Thought`);
   assert.match(await vault.read(entries[0]), /type: guided-journal/);
 
   const dailyAfter = await vault.read(daily);
@@ -205,7 +218,7 @@ test("ignores daily-note candidates without a sortable date", async () => {
 
   await automation.analyzeThought(params);
 
-  assert.equal(vault.getMarkdownFiles().filter((file) => file.parent.path.startsWith("Journal/")).length, 1);
+  assert.equal(vault.getMarkdownFiles().filter((file) => file.parent.path.startsWith(`Daily/${localDate(new Date())}/journal`)).length, 1);
 });
 
 test("uses a suffix for collisions and re-links an unlinked retry without duplicating", async () => {
@@ -217,11 +230,11 @@ test("uses a suffix for collisions and re-links an unlinked retry without duplic
   await automation.checkIn(params);
   let entries = vault.getMarkdownFiles().filter((file) => file.parent.path === journalFolderForDaily(daily));
   assert.equal(entries.length, 2);
-  assert.ok(entries.some((file) => file.basename.endsWith("Check-in 2")));
+  assert.ok(entries.some((file) => file.basename.endsWith("Check-In 2")));
 
   const latest = entries.at(-1);
   const latestLink = `- [[${latest.path.replace(/\.md$/, "")}|${latest.basename}]]`;
-  const foreignLink = `- [[Journal/other/${latest.basename}]]`;
+  const foreignLink = `- [[Daily/other/journal/${latest.basename}]]`;
   const contentWithoutLatestLink = (await vault.read(daily)).replace(`${latestLink}\n`, "") + `${foreignLink}\n`;
   await vault.modify(daily, contentWithoutLatestLink);
   await automation.checkIn(params);
@@ -242,7 +255,7 @@ test("keeps an explicitly selected older Daily Note as the target", async () => 
 
   const entries = vault.getMarkdownFiles().filter((file) => file.parent.path === journalFolderForDaily(daily));
   assert.equal(entries.length, 1);
-  assert.match(entries[0].path, new RegExp(`^Journal/${localDate(yesterday)}/`));
+  assert.match(entries[0].path, new RegExp(`^Daily/${localDate(yesterday)}/journal/`));
 });
 
 test("repairs Journal headings but does not recreate a missing Daily Note target", async () => {
@@ -260,9 +273,10 @@ test("repairs Journal headings but does not recreate a missing Daily Note target
   assert.match(dailyContent, /## Journal/);
   assert.match(dailyContent, /### Check-ins/);
   assert.match(dailyContent, /### Analyze Thoughts/);
+  assert.match(dailyContent, /### Practice Gratitude/);
 
   const orphanEntry = vault.getMarkdownFiles().find((file) => file.parent.path === journalFolderForDaily(daily));
-  const otherDaily = vault.add("Daily/2099-01-01/2099-01-01.md", "---\ntype: daily-note\ndate: \"2099-01-01\"\n---\n\n# Other Daily Note\n");
+  const otherDaily = vault.add("Daily/2099-01-01/2099-01-01 Daily.md", "---\ntype: daily-note\ndate: \"2099-01-01\"\n---\n\n# Other Daily Note\n");
   vault.files.delete(daily.path);
   vault.contents.delete(daily.path);
   await automation.checkIn(params);
@@ -272,11 +286,11 @@ test("repairs Journal headings but does not recreate a missing Daily Note target
   assert.equal(filesAfterFailure.length, 1);
   assert.equal(filesAfterFailure[0].path, orphanEntry.path);
   assert.equal(vault.getAbstractFileByPath(daily.path), undefined);
-  assert.doesNotMatch(await vault.read(otherDaily), /Check-in/);
+  assert.doesNotMatch(await vault.read(otherDaily), /Check-In/);
   assert.match(messages.join("\n"), /missing Daily Note/);
 });
 
-test("creates only Daily on daily-note creation, then creates Journal on first entry", async () => {
+test("creates the journal subfolder only on the first entry and preserves Daily Note content", async () => {
   const { app, daily, vault } = seedVault();
   const automation = loadAutomation();
   const params = { app, quickAddApi: makeQuickAdd(), obsidian: {} };
@@ -286,18 +300,15 @@ test("creates only Daily on daily-note creation, then creates Journal on first e
     `---\ntype: daily-note\ndate: "${today}"\n---\n\n# Legacy Daily Note\n`,
   );
   const selected = await automation.__test.getOrCreateDailyNote(app, today);
-  assert.equal(selected.path, `Daily/${today}/${today}.md`);
+  assert.equal(selected.path, `Daily/${today}/${today} Daily.md`);
 
   vault.files.delete(daily.path);
   vault.contents.delete(daily.path);
   app.workspace.activeFile = undefined;
   const createdDaily = await automation.__test.getOrCreateDailyNote(app, today);
-  assert.equal(createdDaily.path, `Daily/${today}/${today}.md`);
+  assert.equal(createdDaily.path, `Daily/${today}/${today} Daily.md`);
   assert.ok(vault.folders.has(`Daily/${today}`));
-  assert.ok(!vault.folders.has(`Journal/${today}`));
-  const createdContent = await vault.read(createdDaily);
-  const h2Headings = [...createdContent.matchAll(/^##\s+(.*)$/gm)].map((match) => match[1]);
-  assert.deepEqual(h2Headings, ["Tasks", "Notes", "Journal"]);
+  assert.ok(!vault.folders.has(`Daily/${today}/journal`));
 
   const withUserNotes = (await vault.read(createdDaily))
     .replace("- [ ]", "- [ ] Review team project deliverables")
@@ -305,10 +316,10 @@ test("creates only Daily on daily-note creation, then creates Journal on first e
   await vault.modify(createdDaily, withUserNotes);
 
   await automation.checkIn(params);
-  assert.ok(vault.folders.has(`Journal/${today}`));
+  assert.ok(vault.folders.has(`Daily/${today}/journal`));
   const checkInEntries = vault
     .getMarkdownFiles()
-    .filter((file) => file.parent.path === `Journal/${today}` && frontmatter(vault.contents.get(file.path)).type === "check-in");
+    .filter((file) => file.parent.path === `Daily/${today}/journal` && frontmatter(vault.contents.get(file.path)).type === "check-in");
   assert.equal(checkInEntries.length, 1);
   const checkInLink = `- [[${checkInEntries[0].path.replace(/\.md$/, "")}|${checkInEntries[0].basename}]]`;
   const dailyAfterCheckIn = await vault.read(createdDaily);

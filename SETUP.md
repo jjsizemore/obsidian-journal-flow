@@ -1,6 +1,6 @@
 # Setup: Obsidian Daily Note and Journal Flow
 
-Install from your laptop, then finish in Obsidian on iPhone. **This package does not sync notes.** It adds templates, a QuickAdd workflow, and a local plugin to an existing vault. Complete the six checkpoints below before treating setup as finished.
+Install from your laptop, then finish in Obsidian on iPhone. **This package does not sync notes.** It adds templates, a QuickAdd workflow, and optional styling to an existing vault. Complete the six checkpoints below before treating setup as finished.
 
 You need Obsidian on both devices, a working sync route, and [Node.js LTS](https://nodejs.org/) on the laptop only. Download and extract this repository, or use an existing checkout. In Terminal, enter its folder (the one containing `setup/install.mjs`), then check Node is available:
 
@@ -80,7 +80,7 @@ Follow the complete [active-vault identity gate in AGENTS.md](AGENTS.md#vault-id
    node setup/install.mjs --vault "<canonical-active-vault>" --apply
    ```
 
-Record the apply result and backup location. The installer backs up existing files before replacing them, including `daily-notes.json` and `community-plugins.json`, and preserves unknown config keys. It does not delete or migrate existing `Daily/` or `Journal/` notes, historical inline check-ins, or unrelated vault content. It intentionally does not rewrite QuickAdd `data.json`; that remains UI configuration.
+Record the apply result and backup location. The installer backs up existing files before replacing them, including `daily-notes.json` and `community-plugins.json`, and preserves unknown config keys. It does not delete or migrate existing `Daily/`, `Journal/`, or `Daily/*/journal/` notes, historical inline check-ins, or unrelated vault content. It intentionally does not rewrite QuickAdd `data.json`; that remains UI configuration.
 
 The [manifest](setup/manifest.json) is the source of truth for destinations. The installer, not manual folder copying, places files here:
 
@@ -88,6 +88,7 @@ The [manifest](setup/manifest.json) is the source of truth for destinations. The
 | --- | --- |
 | `Templates/Daily Note.md` | `Templates/Daily Note.md` |
 | `Templates/Journal/Check-in.md` | `Templates/Journal/Check-in.md` |
+| `Templates/Journal/Practice Gratitude.md` | `Templates/Journal/Practice Gratitude.md` |
 | `Templates/Journal/Analyze Thought.md` | `Templates/Journal/Analyze Thought.md` |
 | `Scripts/Journal Flow.md` | `Scripts/Journal Flow.md` |
 | `Snippets/journal-flow.css` | `.obsidian/snippets/journal-flow.css` |
@@ -111,30 +112,33 @@ Under **Settings → Community plugins**, enable community plugins if prompted, 
 The installer already configures **Settings → Daily notes**:
 
 ```text
-Date format: YYYY-MM-DD/YYYY-MM-DD
+Date format: YYYY-MM-DD/YYYY-MM-DD [Daily]
 New file location: Daily
 Template file location: Templates/Daily Note
 Open daily note on startup: optional
 ```
 
-This produces `Daily/2026-08-13/2026-08-13.md`. Creating a Daily Note does not create a Journal folder or entry; the Journal folder is created only when a journal workflow runs.
+This produces `Daily/2026-08-13/2026-08-13 Daily.md`. Creating a Daily Note does not create a journal folder or entry; the lowercase `journal` folder is created only when a journal workflow runs.
 
-The Daily Note contains Schedule, Activities, Journal, Thoughts, Notes, and Tasks. Its Journal section has managed Check-ins and Analyze Thoughts subsections. Obsidian headings are foldable on macOS and iOS.
+The Daily Note contains Tasks, Notes, and Journal. Its Journal section has managed Check-ins, Practice Gratitude, and Analyze Thoughts subsections. Obsidian headings are foldable on macOS and iOS.
 
-### Configure two QuickAdd Macro choices
+### Configure three QuickAdd Macro choices
 
 Open **Settings → QuickAdd**. For each row below, add a choice of type **Macro**, open its configuration, and add a **User script** step with the exact target shown. Enable each choice as an Obsidian command using its command/lightning-bolt control.
 
 | Choice name | User script target |
 | --- | --- |
-| `New Check-in` | `Scripts/Journal Flow.md::checkIn` |
+| `New Check-In` | `Scripts/Journal Flow.md::checkIn` |
+| `New Practice Gratitude` | `Scripts/Journal Flow.md::practiceGratitude` |
 | `New Analyze Thought` | `Scripts/Journal Flow.md::analyzeThought` |
 
-In the Macro Builder, **Browse** is QuickAdd's script picker, not a native file picker. You can enter the Markdown note's vault path with `::checkIn` or `::analyzeThought` to select the export. Keep the supplied note intact: QuickAdd runs its first `js` or `javascript` code block, including on iOS.
+In the Macro Builder, **Browse** is QuickAdd's script picker, not a native file picker. You can enter the Markdown note's vault path with `::checkIn`, `::practiceGratitude`, or `::analyzeThought` to select the export. Keep the supplied note intact: QuickAdd runs its first `js` or `javascript` code block, including on iOS.
 
-Open the command palette and confirm both choices are available. If not, enable them as commands in QuickAdd. Do not edit or replace `.obsidian/plugins/quickadd/data.json` to force setup; use the UI. See [QuickAdd user scripts](https://quickadd.obsidian.guide/docs/UserScripts/).
+Open the command palette and confirm all three choices are available. If not, enable them as commands in QuickAdd. Do not edit or replace `.obsidian/plugins/quickadd/data.json` to force setup; use the UI. See [QuickAdd user scripts](https://quickadd.obsidian.guide/docs/UserScripts/).
 
-The script reads the selected Daily Note's date, creates the entry in `Journal/YYYY-MM-DD/`, and adds one canonical link in the Daily Note plus the entry's backlink.
+For an existing setup, rename the `New Check-in` choice to `New Check-In` in the QuickAdd UI and add `New Practice Gratitude`. Keep the existing `::checkIn` and `::analyzeThought` script targets; do not create duplicate choices or rewrite `data.json`.
+
+The script reads the selected Daily Note's date, creates the entry in `Daily/YYYY-MM-DD/journal/`, and adds one canonical link in the Daily Note plus the entry's backlink.
 
 Now run the local verifier and record its full output:
 
@@ -150,7 +154,7 @@ Resolve every reported failure and required manual step. A successful on-disk ch
 2. For Obsidian Sync, recheck the per-device plugin and configuration categories in step 1. For iCloud, confirm you opened the same app-managed vault, not a local duplicate.
 3. Fully quit and reopen Obsidian on iPhone after plugin files/settings arrive.
 4. Confirm the required core plugins and **QuickAdd** are enabled. QuickAdd can be installed from Browse if needed.
-5. Open the command palette and confirm **New Check-in** and **New Analyze Thought** are available. If the macros did not arrive, configure them through the QuickAdd UI exactly as in step 4; do not create another vault or rerun the installer on iPhone.
+5. Open the command palette and confirm **New Check-In**, **New Practice Gratitude**, and **New Analyze Thought** are available. If the macros did not arrive, configure them through the QuickAdd UI exactly as in step 4; do not create another vault or rerun the installer on iPhone.
 
 If a required plugin or script is missing, stop and repair sync before running the workflow. A synced note alone does not prove that the hidden `.obsidian` plugin files or settings arrived. Hotkeys, mobile-toolbar placement, and styling are optional and documented below.
 
@@ -159,9 +163,9 @@ If a required plugin or script is missing, stop and repair sync before running t
 Perform these checks yourself in the actual apps; an agent can guide you but **CLI verification cannot claim macOS or iOS UAT**.
 
 1. On the laptop, use the **Daily notes** command to create/open today's note. Confirm it is under `Daily/YYYY-MM-DD/`.
-2. Run **New Check-in** and **New Analyze Thought** from the command palette. Confirm each creates a standalone note under `Journal/YYYY-MM-DD/`, with one link in the matching Daily Note subsection and a backlink to the Daily Note.
-3. Wait for sync. On iPhone, open that same Daily Note and follow both links. Confirm the entry contents match.
-4. On iPhone, run both commands and confirm the same folder/link behavior for the new entries. Return to the laptop after sync and confirm both iPhone-created notes and their Daily Note links arrived.
+2. Run **New Check-In**, **New Practice Gratitude**, and **New Analyze Thought** from the command palette. Confirm each creates a standalone note under `Daily/YYYY-MM-DD/journal/`, with one link in the matching Daily Note subsection and a backlink to the Daily Note.
+3. Wait for sync. On iPhone, open that same Daily Note and follow all three links. Confirm the entry contents match.
+4. On iPhone, run all three commands and confirm the same folder/link behavior for the new entries. Return to the laptop after sync and confirm all iPhone-created notes and their Daily Note links arrived.
 5. Record the desktop and iPhone results separately. Once the round trip is proved, remove only the temporary sync-check note you created in step 2.
 
 Setup is complete only after the identity/authorization/backup/restart evidence from `AGENTS.md`, verifier output, required UI configuration, and both device checks are recorded. Do not mark a missing check as passed. Wait for sync before switching devices; this workflow does not provide cross-device locking or replace backups.
@@ -171,7 +175,8 @@ Setup is complete only after the identity/authorization/backup/restart evidence 
 Recommended desktop hotkeys, if conflict-free:
 
 ```text
-New Check-in: Cmd/Ctrl+Shift+C
+New Check-In: Cmd/Ctrl+Shift+C
+New Practice Gratitude: Cmd/Ctrl+Shift+G
 New Analyze Thought: Cmd/Ctrl+Shift+A
 ```
 
@@ -185,19 +190,20 @@ Date format: YYYY-MM-DD
 Time format: HH:mm
 ```
 
-The Daily Note is a general day-level template; Check-in and Analyze Thought are specialized journal-entry templates under `Templates/Journal`. For this workflow, create Daily Notes through Daily notes and entries through QuickAdd rather than inserting raw templates.
+The Daily Note is a general day-level template; Check-In, Practice Gratitude, and Analyze Thought are specialized journal-entry templates under `Templates/Journal`. For this workflow, create Daily Notes through Daily notes and entries through QuickAdd rather than inserting raw templates.
 
 
 ## Reference: use the workflow
 
 1. Open a Daily Note.
-2. Run **New Check-in** or **New Analyze Thought** from the command palette, hotkey, or mobile toolbar.
-3. The standalone note is created under `Journal/YYYY-MM-DD/`.
+2. Run **New Check-In**, **New Practice Gratitude**, or **New Analyze Thought** from the command palette, hotkey, or mobile toolbar.
+3. The standalone note is created under `Daily/YYYY-MM-DD/journal/`.
 4. The Daily Note receives a canonical link under:
 
 ```text
 ## Journal
 ### Check-ins
+### Practice Gratitude
 ### Analyze Thoughts
 ```
 
@@ -215,7 +221,7 @@ If the active Daily Note date differs from the local clock date, QuickAdd asks w
 - Create/open today's Daily Note.
 - Choose another Daily Note.
 
-If today's Daily Note does not exist, the script creates it under `Daily/YYYY-MM-DD/`; it does not create `Journal/YYYY-MM-DD/` until the journal entry is actually created.
+If today's Daily Note does not exist, the script creates it under `Daily/YYYY-MM-DD/`; it does not create `Daily/YYYY-MM-DD/journal/` until the journal entry is actually created.
 
 Opening an older Daily Note intentionally supports backdated entries.
 
@@ -227,11 +233,11 @@ When macOS and iOS have different timezones, the device-local clock is used only
 
 For every new entry, the script:
 
-- Repairs missing `## Journal`, `### Check-ins`, or `### Analyze Thoughts` headings.
+- Repairs missing `## Journal`, `### Check-ins`, `### Practice Gratitude`, or `### Analyze Thoughts` headings.
 - Preserves subtitles and existing Daily Note content.
 - Appends one canonical wikilink under the matching subtype.
 - Avoids duplicate links by canonical note path.
-- Adds a numeric filename suffix only when the timestamp/type filename already exists.
+- Adds a numeric filename suffix only when the same `YYYY-MM-DD {note_type}` filename already exists.
 - Re-reads the Daily Note immediately before writing to reduce iCloud sync conflicts.
 - Keeps the standalone note if Daily Note updating fails and reports an actionable retry.
 - Does not guess a replacement when a journal entry's Daily Note backlink is missing.
@@ -240,11 +246,11 @@ Managed headings are intentionally stable. Rename them only if you also update t
 
 ## Optional: configure attachments
 
-Because Daily Notes and Journal entries are now in separate dated folders, **In subfolder under current folder** keeps their attachments separate:
+Because the Daily Note and its journal entries now share one dated folder, **In subfolder under current folder** keeps each day's attachments inside that day:
 
 ```text
 Daily/2026-08-13/Attachments/
-Journal/2026-08-13/Attachments/
+Daily/2026-08-13/journal/Attachments/
 ```
 
 Under **Settings → Files & Links**:
@@ -256,7 +262,7 @@ Use Wikilinks: On
 Automatically update internal links: On
 ```
 
-This keeps general Daily Note media separate from journal-specific media.
+This keeps each day's general Daily Note media and journal-specific media separate without a second top-level tree.
 
 ## Optional: enable the CSS snippet
 
@@ -274,9 +280,13 @@ On iOS:
 
 The workflow remains usable without the snippet.
 
-## Reference: complete Analyze Thought
+## Reference: complete Practice Gratitude and Analyze Thought
 
-The guided note contains:
+Practice Gratitude contains one prompt:
+
+1. What are you grateful for?
+
+The guided Analyze Thought note contains:
 
 1. The unhelpful thought.
 2. Possible cognitive distortions.
@@ -291,17 +301,19 @@ When finished, change `status` from `in-progress` to `complete`.
 Useful filename searches:
 
 ```text
-Check-in
+Check-In
+Practice Gratitude
 Analyze Thought
-2026-08-13 Journal
+2026-08-13 journal
 ```
 
 Useful Obsidian searches:
 
 ```text
-path:"Journal" [type:check-in]
-path:"Journal" [type:guided-journal]
-path:"Journal/2026-08-13" [journal:analyze-thought]
+path:"journal" [type:check-in]
+path:"journal" [type:guided-journal]
+path:"Daily/2026-08-13/journal" [journal:analyze-thought]
+path:"Daily/2026-08-13/journal" [journal:practice-gratitude]
 task-done:"Catastrophizing"
 task-done:"Stressed"
 ```
@@ -310,12 +322,12 @@ The Daily Note's persisted Journal links are the primary index. Search remains t
 
 ## Troubleshooting
 
-### Daily Notes still use the old Journal path
+### Daily Notes still use the old path
 
 Change the Daily Notes settings to:
 
 ```text
-Date format: YYYY-MM-DD/YYYY-MM-DD
+Date format: YYYY-MM-DD/YYYY-MM-DD [Daily]
 New file location: Daily
 Template file location: Templates/Daily Note
 ```
@@ -334,6 +346,7 @@ For member-specific steps, use:
 
 ```text
 Scripts/Journal Flow.md::checkIn
+Scripts/Journal Flow.md::practiceGratitude
 Scripts/Journal Flow.md::analyzeThought
 ```
 
@@ -344,7 +357,7 @@ The note must contain a `js` or `javascript` code block. Do not place it inside 
 Open the intended Daily Note before running QuickAdd. The entry should be under:
 
 ```text
-Journal/YYYY-MM-DD/
+Daily/YYYY-MM-DD/journal/
 ```
 
 ### The Daily Note link is missing

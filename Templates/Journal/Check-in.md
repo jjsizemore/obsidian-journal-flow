@@ -2,16 +2,16 @@
 type: check-in
 date: "{{date:YYYY-MM-DD}}"
 created: "{{date:YYYY-MM-DD}}T{{time:HH:mm:ss}}"
-daily_note: "[[Daily/{{date:YYYY-MM-DD}}/{{date:YYYY-MM-DD}}]]"
+daily_note: "[[Daily/{{date:YYYY-MM-DD}}/{{date:YYYY-MM-DD}} Daily]]"
 cssclasses:
   - journal-flow
 tags:
   - journal/check-in
 ---
 
-# Check-in · {{time:HH:mm}}
+# Check-In · {{time:HH:mm}}
 
-[[Daily/{{date:YYYY-MM-DD}}/{{date:YYYY-MM-DD}}|Open today's Daily Note]]
+[[Daily/{{date:YYYY-MM-DD}}/{{date:YYYY-MM-DD}} Daily|Open today's Daily Note]]
 
 
 > [!journal-progress] Step 1 of 4 · How are you doing?
@@ -92,7 +92,13 @@ tags:
 
 <!-- Paste or drag an image here when useful. With the recommended Files & Links setting, it will be stored in this date folder's Attachments subfolder. -->
 
-> [!journal-action] Check-in complete
-> Is a particular thought contributing to how you feel?
+> [!journal-action] Choose a next step
+> **No mood selected, or more than one selected?** Choose one mood to see which recommendation applies.
 >
-> Run the `New Analyze Thought` QuickAdd command. It creates a standalone guided note in this Daily Note's folder and adds its link under **Analyze Thoughts**.
+> **Good / Great:** Featured — **Practice Gratitude**. Run `New Practice Gratitude` to reflect on what you are grateful for. Alternative — `New Analyze Thought`.
+>
+> **Very bad / Bad / Okay:** Featured — **Analyze Thought**. Run `New Analyze Thought` to explore a thought affecting your feelings. Alternative — `New Practice Gratitude`.
+>
+> These are suggestions, not requirements. You can choose either guided journal or stop after your Check-In.
+>
+> Each command creates a standalone note in this Daily Note's `journal` folder and adds its link to the Daily Note. This guidance is static; checking a mood does not change or hide the text.
