@@ -106,7 +106,7 @@ async function resolveDailyNote(params) {
   const linkedDaily = await dailyNoteFromFile(app, active);
   if (linkedDaily) return linkedDaily;
   if (dailyNoteLinkFromFile(app, active)) {
-    await showError(params, "The active journal entry points to a missing Daily Note. Restore it or open the intended Daily Note, then retry.");
+    await showError(params, "The active journal entry points to a missing or invalid Daily Note. Restore the missing note or open the intended Daily Note, then retry.");
     return undefined;
   }
 
@@ -144,7 +144,8 @@ async function dailyNoteFromFile(app, file) {
 
   const link = dailyNoteLinkFromFile(app, file);
   if (!link) return undefined;
-  return app.metadataCache.getFirstLinkpathDest(link, file.path) || undefined;
+  const destination = app.metadataCache.getFirstLinkpathDest(link, file.path);
+  return isDailyNote(app, destination) ? destination : undefined;
 }
 
 function dailyNoteLinkFromFile(app, file) {

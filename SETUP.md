@@ -225,7 +225,7 @@ If today's Daily Note does not exist, the script creates it under `Daily/YYYY-MM
 
 Opening an older Daily Note intentionally supports backdated entries.
 
-If no Daily Note is active, the script offers to create/open today's Daily Note or select another existing Daily Note. If the active file is a journal entry whose `daily_note` target is missing, the script refuses to guess and reports the orphan target instead.
+If no Daily Note is active, the script offers to create/open today's Daily Note or select another existing Daily Note. If the active file is a journal entry whose `daily_note` target is missing or resolves to a non-Daily file, the script refuses to use that file or guess another and asks you to restore the missing note or open the intended Daily Note.
 
 When macOS and iOS have different timezones, the device-local clock is used only to detect the mismatch. The selected Daily Note remains authoritative unless you choose today's note.
 
@@ -360,9 +360,9 @@ Open the intended Daily Note before running QuickAdd. The entry should be under:
 Daily/YYYY-MM-DD/journal/
 ```
 
-### The Daily Note link is missing
+### The Daily Note link is missing or invalid
 
-Run the same QuickAdd command again. The script preserves the existing entry, offers it as an unlinked note, and adds only the missing canonical link. If the Daily Note was moved or deleted, restore it or choose another Daily Note.
+Run the same QuickAdd command again to repair a missing canonical link. If the active journal entry's `daily_note` target is missing or resolves to a non-Daily file, restore the missing Daily Note or open the intended Daily Note, then retry.
 
 ### Two devices show different dates
 

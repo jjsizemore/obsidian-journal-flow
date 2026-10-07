@@ -17,7 +17,7 @@ Daily/
 ```
 
 - `Daily` contains only date folders.
-- Each date folder contains a Daily Note and a lowercase `journal` subfolder.
+- Each date folder contains a Daily Note; the lowercase `journal` subfolder is created lazily by the first guided entry.
 - All Daily, Check-In, Practice Gratitude, and Analyze Thought note titles
   begin with `YYYY-MM-DD {note_type}`. Repeats use clean numbered suffixes
   (`Check-In 2`, not time suffixes); creation time remains in properties.

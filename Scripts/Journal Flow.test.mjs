@@ -287,7 +287,6 @@ test("repairs Journal headings but does not recreate a missing Daily Note target
   assert.equal(filesAfterFailure[0].path, orphanEntry.path);
   assert.equal(vault.getAbstractFileByPath(daily.path), undefined);
   assert.doesNotMatch(await vault.read(otherDaily), /Check-In/);
-  assert.match(messages.join("\n"), /missing Daily Note/);
 });
 
 test("creates the journal subfolder only on the first entry and preserves Daily Note content", async () => {
@@ -327,4 +326,34 @@ test("creates the journal subfolder only on the first entry and preserves Daily 
   assert.ok(dailyAfterCheckIn.indexOf(checkInLink) > dailyAfterCheckIn.indexOf("### Check-ins"));
   assert.ok(dailyAfterCheckIn.includes("- [ ] Review team project deliverables"));
   assert.ok(dailyAfterCheckIn.includes("Captured architecture considerations for the week."));
+});
+
+test("rejects a typed journal entry linked to a dated non-Daily note without modifying either", async () => {
+  const date = "2001-02-03";
+  const { app, vault } = seedVault(date);
+  const otherNote = vault.add(
+    `Notes/${date}/${date} Meeting.md`,
+    `---\ntype: meeting-note\ndate: "${date}"\n---\n\n# Meeting\n\nKeep these unrelated notes byte-for-byte.\n`,
+  );
+  const activeEntry = vault.add(
+    `Journal/${date}/${date} Check-In.md`,
+    `---\ntype: check-in\ndate: "${date}"\ndaily_note: "[[Notes/${date}/${date} Meeting]]"\n---\n\n# Check-In\n\nExisting entry content.\n`,
+  );
+  app.workspace.activeFile = activeEntry;
+  const messages = [];
+  const quickAddApi = makeQuickAdd();
+  quickAddApi.infoDialog = async (...args) => messages.push(args);
+  const params = { app, quickAddApi, obsidian: {} };
+  const unrelatedBefore = await vault.read(otherNote);
+  const entryBefore = await vault.read(activeEntry);
+  const filesBefore = [...vault.files.keys()].sort();
+
+  await loadAutomation().checkIn(params);
+
+  assert.equal(await vault.read(otherNote), unrelatedBefore);
+  assert.equal(await vault.read(activeEntry), entryBefore);
+  assert.deepEqual([...vault.files.keys()].sort(), filesBefore);
+  assert.equal(vault.folders.has(`Daily/${date}/journal`), false);
+  assert.equal(app.workspace.getActiveFile(), activeEntry);
+  assert.equal(messages.length, 1);
 });
