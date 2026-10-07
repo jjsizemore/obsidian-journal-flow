@@ -24,3 +24,7 @@ Separate folders make the Daily Note a general day-level workspace and keep guid
 ## Rationale
 
 Daily Notes contain schedules, activities, thoughts, notes, and tasks in addition to journaling. Treating them as Journal notes conflates two domains and makes the general day record harder to navigate. Separate storage preserves the general-purpose Daily Note while retaining a compact, durable index of specialized journal workflows.
+
+## Implementation note
+
+The section list in Rationale describes the decision-time layout. The current canonical template (`Templates/Daily Note.md`) uses Tasks, Notes, and Journal headings, with Journal holding managed Check-ins and Analyze Thoughts subsections; Notes covers activities, thoughts, references, and miscellaneous capture. The decision — separate Daily and Journal storage — is unchanged.

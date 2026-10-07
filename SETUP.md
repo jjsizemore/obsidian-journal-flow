@@ -119,7 +119,7 @@ Open daily note on startup: optional
 
 This produces `Daily/2026-08-13/2026-08-13.md`. Creating a Daily Note does not create a Journal folder or entry; the Journal folder is created only when a journal workflow runs.
 
-The Daily Note contains Schedule, Activities, Journal, Thoughts, Notes, and Tasks. Its Journal section has managed Check-ins and Analyze Thoughts subsections. Obsidian headings are foldable on macOS and iOS.
+The Daily Note contains Tasks, Notes, and Journal. Its Journal section has managed Check-ins and Analyze Thoughts subsections. Obsidian headings are foldable on macOS and iOS.
 
 ### Configure two QuickAdd Macro choices
 

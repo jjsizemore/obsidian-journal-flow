@@ -19,7 +19,7 @@ Node.js is needed only on the laptop. You do not run the installer on iPhone or 
 
 ## What this package provides
 
-- A general Daily Note with sections for schedule, activities, journal links, thoughts, notes, and tasks.
+- A general Daily Note with Tasks, Notes, and Journal sections (Journal holds links to standalone entries).
 - Standalone **Check-in** and **Analyze Thought** notes stored under dated `Journal` folders.
 - Persisted canonical links from each Daily Note to its journal entries.
 - A QuickAdd workflow that runs on macOS and iOS.
