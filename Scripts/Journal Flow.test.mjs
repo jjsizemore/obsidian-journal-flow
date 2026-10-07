@@ -295,8 +295,25 @@ test("creates only Daily on daily-note creation, then creates Journal on first e
   assert.equal(createdDaily.path, `Daily/${today}/${today}.md`);
   assert.ok(vault.folders.has(`Daily/${today}`));
   assert.ok(!vault.folders.has(`Journal/${today}`));
+  const createdContent = await vault.read(createdDaily);
+  const h2Headings = [...createdContent.matchAll(/^##\s+(.*)$/gm)].map((match) => match[1]);
+  assert.deepEqual(h2Headings, ["Tasks", "Notes", "Journal"]);
+
+  const withUserNotes = (await vault.read(createdDaily))
+    .replace("- [ ]", "- [ ] Review team project deliverables")
+    .replace(/(## Notes[^\n]*\n(?:[^\n]*\n)?)/, "$1\nCaptured architecture considerations for the week.\n");
+  await vault.modify(createdDaily, withUserNotes);
 
   await automation.checkIn(params);
   assert.ok(vault.folders.has(`Journal/${today}`));
-  assert.equal(vault.getMarkdownFiles().filter((file) => file.parent.path === `Journal/${today}` && frontmatter(vault.contents.get(file.path)).type === "check-in").length, 1);
+  const checkInEntries = vault
+    .getMarkdownFiles()
+    .filter((file) => file.parent.path === `Journal/${today}` && frontmatter(vault.contents.get(file.path)).type === "check-in");
+  assert.equal(checkInEntries.length, 1);
+  const checkInLink = `- [[${checkInEntries[0].path.replace(/\.md$/, "")}|${checkInEntries[0].basename}]]`;
+  const dailyAfterCheckIn = await vault.read(createdDaily);
+  assert.ok(dailyAfterCheckIn.includes(checkInLink));
+  assert.ok(dailyAfterCheckIn.indexOf(checkInLink) > dailyAfterCheckIn.indexOf("### Check-ins"));
+  assert.ok(dailyAfterCheckIn.includes("- [ ] Review team project deliverables"));
+  assert.ok(dailyAfterCheckIn.includes("Captured architecture considerations for the week."));
 });

@@ -1,9 +1,0 @@
-{
-  "id": "journal-flow-click-guard",
-  "name": "Journal Flow Click Guard",
-  "version": "1.0.0",
-  "minAppVersion": "0.14.8",
-  "description": "Prevents accidental Live Preview edits from clicks on journal cards.",
-  "author": "Obsidian Journal Flow",
-  "isDesktopOnly": false
-}
