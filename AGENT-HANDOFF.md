@@ -17,6 +17,7 @@ Templates/
 ├── Daily Note.md
 └── Journal/
     ├── Check-in.md
+    ├── Practice Gratitude.md
     └── Analyze Thought.md
 
 Scripts/
@@ -24,6 +25,7 @@ Scripts/
 
 Snippets/
 └── journal-flow.css
+```
 
 ## Required work
 
@@ -33,7 +35,7 @@ Snippets/
 4. Install `Scripts/Journal Flow.md` under `Scripts/`.
 5. Create `.obsidian/snippets/` if needed and install `journal-flow.css`.
 6. Install QuickAdd from Obsidian's Community plugins; it is not bundled. The installer only copies the Journal Flow package; do not edit undocumented Obsidian configuration JSON.
-7. Preserve existing `Journal/YYYY-MM-DD/` notes and historical inline check-ins.
+7. Preserve existing `Daily/`, `Journal/`, and `Daily/*/journal/` notes and historical inline check-ins.
 8. Back up conflicting target files before replacement.
 9. Validate Markdown frontmatter, script syntax, mirror parity, and CSS braces.
 10. Report remaining UI settings and macOS/iOS UAT steps.
@@ -51,7 +53,7 @@ Time format: HH:mm
 ### Daily notes
 
 ```text
-Date format: YYYY-MM-DD/YYYY-MM-DD
+Date format: YYYY-MM-DD/YYYY-MM-DD [Daily]
 New file location: Daily
 Template file location: Templates/Daily Note
 ```
@@ -59,14 +61,17 @@ Template file location: Templates/Daily Note
 This produces:
 
 ```text
-Daily/YYYY-MM-DD/YYYY-MM-DD.md
+Daily/YYYY-MM-DD/YYYY-MM-DD Daily.md
 ```
 
 ### QuickAdd
 
 ```text
-Macro: New Check-in
+Macro: New Check-In
 User script: Scripts/Journal Flow.md::checkIn
+
+Macro: New Practice Gratitude
+User script: Scripts/Journal Flow.md::practiceGratitude
 
 Macro: New Analyze Thought
 User script: Scripts/Journal Flow.md::analyzeThought
@@ -81,11 +86,11 @@ Use Wikilinks: On
 Automatically update internal links: On
 ```
 
-Daily and Journal attachments are intentionally separate:
+Each day's Daily Note and journal attachments stay inside that day's folder:
 
 ```text
 Daily/YYYY-MM-DD/Attachments/
-Journal/YYYY-MM-DD/Attachments/
+Daily/YYYY-MM-DD/journal/Attachments/
 ```
 
 ### Appearance
@@ -96,16 +101,17 @@ Reload CSS snippets and enable journal-flow
 
 ## Acceptance criteria
 
-- Opening a new Daily Note creates `Daily/YYYY-MM-DD/YYYY-MM-DD.md` from `Templates/Daily Note.md`.
-- Daily Note creation does not create an empty `Journal/YYYY-MM-DD/` folder.
-- Running `New Check-in` creates a standalone `type: check-in` note under `Journal/YYYY-MM-DD/`.
-- Running `New Analyze Thought` creates a standalone `type: guided-journal` / `journal: analyze-thought` note under `Journal/YYYY-MM-DD/`.
-- Journal entries backlink to `Daily/YYYY-MM-DD/YYYY-MM-DD`.
+- Opening a new Daily Note creates `Daily/YYYY-MM-DD/YYYY-MM-DD Daily.md` from `Templates/Daily Note.md` (format `YYYY-MM-DD/YYYY-MM-DD [Daily]`).
+- Daily Note creation does not create an empty `Daily/YYYY-MM-DD/journal/` folder.
+- Running `New Check-In` creates a standalone `type: check-in` note under `Daily/YYYY-MM-DD/journal/`.
+- Running `New Practice Gratitude` creates a standalone `type: guided-journal` / `journal: practice-gratitude` note under `Daily/YYYY-MM-DD/journal/`.
+- Running `New Analyze Thought` creates a standalone `type: guided-journal` / `journal: analyze-thought` note under `Daily/YYYY-MM-DD/journal/`.
+- Journal entries backlink to `Daily/YYYY-MM-DD/YYYY-MM-DD Daily` (format `YYYY-MM-DD/YYYY-MM-DD [Daily]`).
 - Each entry receives exactly one canonical wikilink under the correct managed Daily Note Journal subtype heading.
 - Missing managed headings are repaired without deleting existing Daily Note content.
 - Retries offer unlinked existing entries and do not duplicate links.
 - Date mismatches prompt between active, today's, and another Daily Note.
 - A journal entry with a missing Daily Note backlink is preserved and reported, not relinked elsewhere.
-- Existing Journal date folders and notes remain untouched.
+- Existing Daily, Journal, and Daily journal date folders and notes remain untouched.
 - The workflow works on macOS and iOS using the synced Markdown QuickAdd user script.
 - The CSS is optional; the workflow remains usable when disabled.

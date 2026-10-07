@@ -37,7 +37,7 @@ test("installer preserves unknown config keys and backs up replacements", async 
     assert.deepEqual(dailyConfig, {
       folder: "Daily",
       template: "Templates/Daily Note.md",
-      format: "YYYY-MM-DD/YYYY-MM-DD",
+      format: "YYYY-MM-DD/YYYY-MM-DD [Daily]",
       custom: true,
     });
     assert.deepEqual(JSON.parse(await readFile(path.join(vault, ".obsidian/community-plugins.json"), "utf8")), ["other-plugin", "quickadd"]);
@@ -102,7 +102,7 @@ test("canonical preview is read-only and apply prints a shell-safe verifier comm
     assert.ok(preview.stdout.includes(`VAULT ${canonical}\n`));
     assert.match(preview.stdout, /"folder": "Daily"/);
     assert.match(preview.stdout, /"template": "Templates\/Daily Note.md"/);
-    assert.match(preview.stdout, /"format": "YYYY-MM-DD\/YYYY-MM-DD"/);
+    assert.match(preview.stdout, /"format": "YYYY-MM-DD\/YYYY-MM-DD \[Daily\]"/);
     assert.match(preview.stdout, /"quickadd"/);
     assert.deepEqual(await readdir(root, { recursive: true }), before);
     assert.equal(await readFile(path.join(vault, ".obsidian/daily-notes.json"), "utf8"), originalConfig);

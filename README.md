@@ -11,7 +11,7 @@ The setup guide walks you through six checkpoints:
 1. Choose a sync route and open the same vault on both devices.
 2. Prove a temporary note syncs in both directions.
 3. Install once from the laptop into its proven active vault, after reviewing the dry-run and authorizing that exact path.
-4. Install QuickAdd and configure the two commands in Obsidian.
+4. Install QuickAdd and configure the three commands in Obsidian.
 5. Finish plugin and command setup on iPhone.
 6. Create entries on both devices and verify their synced links.
 
@@ -19,8 +19,8 @@ Node.js is needed only on the laptop. You do not run the installer on iPhone or 
 
 ## What this package provides
 
-- A general Daily Note with sections for schedule, activities, journal links, thoughts, notes, and tasks.
-- Standalone **Check-in** and **Analyze Thought** notes stored under dated `Journal` folders.
+- A general Daily Note with Tasks, Notes, and managed Journal subsections.
+- Standalone **Check-In**, **Practice Gratitude**, and **Analyze Thought** notes stored under the day's `journal` subfolder.
 - Persisted canonical links from each Daily Note to its journal entries.
 - A QuickAdd workflow that runs on macOS and iOS.
 - An optional CSS snippet for a restrained teal, card-based appearance.
@@ -30,27 +30,27 @@ Node.js is needed only on the laptop. You do not run the installer on iPhone or 
 ```text
 Daily/
 └── 2026-08-13/
-    └── 2026-08-13.md
-
-Journal/
-└── 2026-08-13/
-    ├── 2026-08-13 0742 Check-in.md
-    └── 2026-08-13 0746 Analyze Thought.md
+    ├── 2026-08-13 Daily.md
+    └── journal/
+        ├── 2026-08-13 Check-In.md
+        ├── 2026-08-13 Practice Gratitude.md
+        └── 2026-08-13 Analyze Thought.md
 
 Templates/
 ├── Daily Note.md
 └── Journal/
     ├── Check-in.md
+    ├── Practice Gratitude.md
     └── Analyze Thought.md
 ```
 
-The Daily Note is the general day-level workspace. Journal entries are specialized child notes in a separate domain folder. The Journal folder is created lazily when the first journal workflow runs.
+The Daily Note is the general day-level workspace. Journal entries are guided notes kept with it inside a lowercase `journal` subfolder. The `journal` folder is created lazily when the first journal workflow runs.
 
 ## Workflow
 
 1. Open today's Daily Note.
-2. Run the `New Check-in` or `New Analyze Thought` QuickAdd command.
-3. The standalone entry is created under `Journal/YYYY-MM-DD/`.
+2. Run one of the `New Check-In`, `New Practice Gratitude`, or `New Analyze Thought` QuickAdd commands.
+3. The standalone entry is created under `Daily/YYYY-MM-DD/journal/`.
 4. The Daily Note receives one canonical link under the matching subtype heading.
 5. If the active note's date differs from the clock date, choose whether to use the active note or create/open today's Daily Note.
 
@@ -58,4 +58,4 @@ The Markdown user script is designed for macOS and iOS. Both devices need the pl
 
 ## Plugins
 
-Keep **Daily notes**, **Templates**, **Search**, and **Word count** enabled. Install and enable **QuickAdd** from Community plugins, then configure the two macros documented in [SETUP.md](SETUP.md).
+Keep **Daily notes**, **Templates**, **Search**, and **Word count** enabled. Install and enable **QuickAdd** from Community plugins, then configure the three macros documented in [SETUP.md](SETUP.md).
