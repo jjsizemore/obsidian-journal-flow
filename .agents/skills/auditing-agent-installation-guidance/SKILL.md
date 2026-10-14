@@ -64,7 +64,7 @@ Active-vault proof is a prerequisite to destination reconciliation and any apply
 
 1. **Source:** every manifest entry resolves beneath the declared `sourceRoot`, exists as a regular file, and is not an accidental symlink. Record source hash.
 2. **Destination:** normalize each destination relative to the intended install root; prove it remains contained and matches the manifest exactly. Record overwrite/config policy and destination hash when available.
-3. **Mirror:** compare each configured same-scope mirror to canonical source by realpath and copied-byte hash. Missing, divergent, unknown, real-file, real-directory, or unsafe symlink targets are conflicts; preserve them for explicit ownership review and do not fall back to copying.
+3. **Mirror:** compare each configured same-scope mirror to canonical source by realpath and copied-byte hash. This repository's declared copy-based `Vault Overlay/` is permitted only when its contained paths are non-symlink regular files/directories and hashes match their canonical sources. Missing, divergent, unknown-ownership, unsafe-symlink, or other unrecognized mirror targets are conflicts; preserve them for explicit ownership review and stop—never overwrite a conflict or fall back around a link.
 4. **Guidance:** every documented path, bundled/not-bundled claim, command, plugin, and config file agrees with the source/destination map. Report exact source locations for mismatches.
 5. **Manifest/implementation:** installer and verifier consume the manifest and enforce its policies rather than maintaining a second inferred list.
 6. **Validator/metadata:** available validators and skill metadata/index entries name the same canonical paths and schema. Run existing generators only; never invent one.
@@ -116,4 +116,4 @@ Do not claim a repair, apply, mirror sync, generator run, or UAT that was not ac
 
 ## Validation
 
-Run only repository-provided checks that exist, using their documented commands. For this skill's CRUD, use the governing leaf's existing metadata, mirror, and validation commands when available. If a command or registry is absent, record `not configured` rather than fabricating it. Run `rtk graphify update .` after changing repository code or guidance, then inspect every changed file and report exact outcomes.
+Run only repository-provided checks that exist, using their documented commands. For this skill's CRUD, use the governing leaf's existing metadata, mirror, and validation commands when available. If a command or registry is absent, record `not configured` rather than fabricating it. Run a graph update after changing repository code or guidance only when this checkout already has a configured graph index and a supported repository graph-update command; otherwise record `not configured` and do not install or generate an index solely for this audit. Inspect every changed file and report exact outcomes.
